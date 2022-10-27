@@ -1,7 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using RealEstateAPI.Models;
-using RealEstateAPI.Repositories;
+using RealEstateAPI.Repositories.LoginRepo;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();

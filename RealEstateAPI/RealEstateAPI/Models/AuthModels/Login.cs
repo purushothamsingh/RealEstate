@@ -6,9 +6,9 @@ namespace RealEstateAPI.Models.AuthModels
     {
         [Key]
         public int Id { get; set; }
-
+        [Required]
         public string UserName { get; set; }
-
+        [Required]
         public String Password { get; set; }
     }
 }

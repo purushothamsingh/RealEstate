@@ -10,14 +10,14 @@ namespace RealEstateAPI.Repositories
 
         private readonly ApplicationDbContext db;
         //   private readonly IMapper mapper;
-
+        private static Response response = new Response();
         public Auth(ApplicationDbContext _db)
         {
             db = _db;
             // mapper = _mapper;
         }
 
-        public async Task<Db_Register> RegisterUser(DomainRegister request)
+        public async Task<Response> RegisterUser(DomainRegister request)
         {
 
             using (var hmac = new HMACSHA512())
@@ -32,7 +32,14 @@ namespace RealEstateAPI.Repositories
                 registers.Email = request.Email;
                 db.Db_Registers.Add(registers);
                 db.SaveChanges();
-                return  registers;
+
+                response.Message = "User Added successfully";
+                response.Error = null;
+                response.Code = Microsoft.AspNetCore.Http.StatusCodes.Status201Created;
+                response.data = registers;
+
+                
+                return  response;
 
             }
         }

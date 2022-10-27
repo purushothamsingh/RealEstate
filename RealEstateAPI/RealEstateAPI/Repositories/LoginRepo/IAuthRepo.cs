@@ -7,6 +7,9 @@ namespace RealEstateAPI.Repositories.LoginRepo
     public interface IAuthRepo
     {
 
-        Task<Response> RegisterUser(DomainRegister req);
+        Task<Response> RegisterUserAsync(DomainRegister req);
+        Task<Response> ValidateUserAsync(Login req);
+        Response CreateResponse(string message, int code, dynamic data, string error);
+
     }
 }

@@ -23,20 +23,17 @@ namespace RealEstateAPI.Controllers.LoginModule
         [HttpPost]
      public async Task<IActionResult>AddUser(DomainRegister req)
         {
-
-            if (ModelState.IsValid)
-            {
-                var user = await authRepo.RegisterUser(req);
-
-                return Ok(user);
-            }
-
-            return BadRequest();
-            
-
-              
+                var user = await authRepo.RegisterUserAsync(req);
+                return Ok(user);    
         }
 
+        [HttpPost("Login")]
+     public async Task<IActionResult>ValidateCredentials(Login req)
+        {
+            var request =  await authRepo.ValidateUserAsync(req);
+
+            return Ok(request);
+        }
       
 
         

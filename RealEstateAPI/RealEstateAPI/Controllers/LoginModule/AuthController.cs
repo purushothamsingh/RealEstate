@@ -16,11 +16,12 @@ namespace RealEstateAPI.Controllers.LoginModule
 
         private readonly IAuthRepo authRepo;
 
+        public static int SaveOtp;
         public AuthController(IAuthRepo _authRepo)
         {
             authRepo = _authRepo;
         }
-        [HttpPost]
+        [HttpPost("Register")]
      public async Task<IActionResult>AddUser(DomainRegister req)
         {
                 var user = await authRepo.RegisterUserAsync(req);
@@ -34,9 +35,31 @@ namespace RealEstateAPI.Controllers.LoginModule
 
             return Ok(request);
         }
-      
 
-        
+        [HttpPut]
+        [Route("ForgotPassword/{otp:int}")]
+        public async Task<IActionResult> ForgotPassword(string email,int otp, string password, string confirmpass )
+        {
+            var request = await authRepo.ForgotPasswordAsync(email, otp, password, confirmpass);
+
+            return Ok(request);
+        }
+        [HttpGet("GenerateOtp")]
+
+        public async Task<IActionResult> GenerateOtp(string email)
+        {
+            var request = await authRepo.GenerateOtpAsync(email);
+            if(request.Code == 200)
+            {
+                SaveOtp = request.Data;
+                return Ok(request.Message);
+            }
+            return Ok(request);
+
+        }
+
+
+
     }
 }
 

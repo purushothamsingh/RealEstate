@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using MailKit.Security;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+using MimeKit.Text;
+using MimeKit;
 using RealEstateAPI.DomainModels;
 using RealEstateAPI.Models;
 using RealEstateAPI.Models.AuthModels;
 using System.Security.Cryptography;
+using MailKit.Net.Smtp;
+using RealEstateAPI.Controllers.LoginModule;
 
 namespace RealEstateAPI.Repositories.LoginRepo
 {
@@ -96,6 +101,78 @@ namespace RealEstateAPI.Repositories.LoginRepo
            
         }
 
-      
+        public async Task<Response> ForgotPasswordAsync(string email,int myotp, string password, string confirmpassword)
+        {
+            var mail = db.Db_Registers.AnyAsync(x => x.Email == email).Result;
+            if(mail == false)
+            {
+                return CreateResponse("", StatusCodes.Status404NotFound, "", "Invalid Email");
+            }
+            else
+            {
+                
+                if(AuthController.SaveOtp == myotp)
+                {
+                    AuthController.SaveOtp = new Random().Next(100000, 2302030);
+                    if (password == confirmpassword)
+                    {
+                        var currentObject = db.Db_Registers.FirstOrDefaultAsync(x => x.Email == email).Result;
+                        using (var hmac = new HMACSHA512())
+                        {
+                            var salt = hmac.Key;
+                            var hashedPassword = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                            currentObject.PaswordSalt = salt;
+                            currentObject.PasswordHash = hashedPassword;
+                            db.Db_Registers.Update(currentObject);
+                            db.SaveChangesAsync();
+
+                            return CreateResponse("Password changed sucessfully", StatusCodes.Status201Created, currentObject, "");
+
+                        }
+                    }
+                    else
+                    {
+                        return CreateResponse("", StatusCodes.Status406NotAcceptable, "", "Password And ConfirmPassword Not Matched");
+                    }
+                }
+                else
+                {
+                    return CreateResponse("", StatusCodes.Status403Forbidden, "", "Invalid Otp");
+                }
+
+
+               
+              
+            }
+           
+        }
+
+
+        public async Task<Response> GenerateOtpAsync(string myemail)
+        {
+            if(db.Db_Registers.AnyAsync(x=>x.Email == myemail).Result)
+            {
+                Random randomNumber = new Random();
+                int value = randomNumber.Next(100000, 999999);
+
+                var email = new MimeMessage();
+                email.From.Add(MailboxAddress.Parse("kpurushothamsingh@gmail.com"));
+                email.To.Add(MailboxAddress.Parse(myemail));
+                email.Subject = "Test Email Subject";
+                email.Body = new TextPart(TextFormat.Html) { Text = "<h3>Your otp is <h3>" + value };
+
+                // send email
+                using var smtp = new SmtpClient();
+                smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+
+                smtp.Authenticate("kpurushothamsingh@gmail.com", "evqypbiaclpnrrlb");
+                smtp.Send(email);
+                smtp.Disconnect(true);
+
+                return CreateResponse("Otp Sent Sucessfully", StatusCodes.Status200OK, value, "");
+            }
+
+            return CreateResponse("Invalid Email", StatusCodes.Status404NotFound, "", "Email Not found");
+        }
     }
 }

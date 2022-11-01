@@ -9,6 +9,7 @@ using RealEstateAPI.Models.AuthModels;
 using System.Security.Cryptography;
 using MailKit.Net.Smtp;
 using RealEstateAPI.Controllers.LoginModule;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace RealEstateAPI.Repositories.LoginRepo
 {
@@ -168,7 +169,7 @@ namespace RealEstateAPI.Repositories.LoginRepo
                 smtp.Authenticate("kpurushothamsingh@gmail.com", "evqypbiaclpnrrlb");
                 smtp.Send(email);
                 smtp.Disconnect(true);
-
+               
                 return CreateResponse("Otp Sent Sucessfully", StatusCodes.Status200OK, value, "");
             }
 

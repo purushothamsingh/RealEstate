@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RealEstateAPI.DomainModels;
@@ -13,10 +14,8 @@ namespace RealEstateAPI.Controllers.LoginModule
     [ApiController]
     public class AuthController : ControllerBase
     {
-
-        private readonly IAuthRepo authRepo;
-
         public static int SaveOtp;
+        private readonly IAuthRepo authRepo;
         public AuthController(IAuthRepo _authRepo)
         {
             authRepo = _authRepo;
@@ -49,7 +48,7 @@ namespace RealEstateAPI.Controllers.LoginModule
         public async Task<IActionResult> GenerateOtp(string email)
         {
             var request = await authRepo.GenerateOtpAsync(email);
-            if(request.Code == 200)
+            if (request.Code == 200)
             {
                 SaveOtp = request.Data;
                 return Ok(request.Message);

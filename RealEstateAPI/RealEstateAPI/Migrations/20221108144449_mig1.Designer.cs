@@ -12,7 +12,7 @@ using RealEstateAPI.Models;
 namespace RealEstateAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221027211857_mig1")]
+    [Migration("20221108144449_mig1")]
     partial class mig1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,6 +35,9 @@ namespace RealEstateAPI.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("Mobile")
+                        .HasColumnType("bigint");
 
                     b.Property<byte[]>("PasswordHash")
                         .IsRequired()
@@ -93,6 +96,9 @@ namespace RealEstateAPI.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("Mobile")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Password")
                         .IsRequired()

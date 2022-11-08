@@ -19,5 +19,6 @@ namespace RealEstateAPI.DomainModels
         public string Email { get; set; } 
         public string Role { get; set; } = "user";
         public bool IsRegister = false;
+        public long Mobile { get; set; }
     }
 }

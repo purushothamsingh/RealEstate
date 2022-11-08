@@ -66,6 +66,7 @@ namespace RealEstateAPI.Repositories.LoginRepo
                 registers.Role = request.Role;
                 registers.Email = request.Email;
                 registers.IsRegister = true;
+                registers.Mobile = request.Mobile;
 
                 if ( db.Db_Registers.FirstOrDefaultAsync(x => x.UserName.ToLower() == registers.UserName.ToLower()).Result != null){
 

@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using RealEstateAPI.Models.AuthModels;
+using RealEstateAPI.Models.Property;
 
 namespace RealEstateAPI.Models
 {
@@ -16,5 +17,6 @@ namespace RealEstateAPI.Models
         public DbSet<Login> login { get; set; }
 
         public DbSet<Db_Register> Db_Registers { get; set; }
+        public DbSet<Cities> Cities { get; set; }
     }
 }

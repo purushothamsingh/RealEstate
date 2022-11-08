@@ -19,5 +19,6 @@ namespace RealEstateAPI.Models.AuthModels
 
         public string Role { get; set; } = "user";
         public bool IsRegister = false;
+        public long Mobile { get; set; }
     }
 }

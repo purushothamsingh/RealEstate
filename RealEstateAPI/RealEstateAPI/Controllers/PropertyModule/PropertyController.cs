@@ -16,18 +16,26 @@ namespace RealEstateAPI.Controllers.PropertyModule
     {
         private readonly IPropertyRepo _repo;
         private readonly IMapper mapper;
-        public PropertyController(IPropertyRepo repo,IMapper _mapper)
+        public PropertyController(IPropertyRepo repo, IMapper _mapper)
         {
             _repo = repo;
             mapper = _mapper;
         }
 
-        [HttpGet("{SellRent}")]
+        [HttpGet("list/{SellRent}")]
         public async Task<IActionResult> GetPropertyList(int SellRent)
         {
             var properties = await _repo.GetPropertiesByIdAsync(SellRent);
             var propertyListDto = mapper.Map<IEnumerable<PropertyListDto>>(properties.Data);
             return Ok(propertyListDto);
+        }
+
+        [HttpGet("detail/{id}")]
+        public async Task<IActionResult> GetPropertyDetail(int id)
+        {
+            var property = await _repo.GetPropertyDetailAsync(id);
+            var propertyDTO = mapper.Map<PropertyDetailDto>(property.Data);
+            return Ok(propertyDTO);
         }
     }
 }

@@ -1,7 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using RealEstateAPI.Models;
-using RealEstateAPI.Profiles;
+using RealEstateAPI.Helper;
 using RealEstateAPI.Repositories.LoginRepo;
 using RealEstateAPI.Repositories.PropertyRepo;
 
@@ -9,10 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 builder.Services.AddDbContext<ApplicationDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("Myconn")));
-builder.Services.AddScoped<IAuthRepo, Auth>();
-builder.Services.AddScoped<ICityRepo, City>();
+builder.Services.AddScoped<IAuthRepo, AuthRepo>();
+builder.Services.AddScoped<ICityRepo, CityRepo>();
+builder.Services.AddScoped<IPropertyRepo, PropertyRepo>();
 builder.Services.AddCors(
     (options) =>
     {

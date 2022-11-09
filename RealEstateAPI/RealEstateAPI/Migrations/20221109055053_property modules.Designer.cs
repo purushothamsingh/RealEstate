@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RealEstateAPI.Models;
 
@@ -11,9 +12,10 @@ using RealEstateAPI.Models;
 namespace RealEstateAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221109055053_property modules")]
+    partial class propertymodules
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -189,6 +191,10 @@ namespace RealEstateAPI.Migrations
                     b.Property<int>("PropertyId")
                         .HasColumnType("int");
 
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PropertyId");
@@ -216,9 +222,6 @@ namespace RealEstateAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("BHK")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BuiltArea")
                         .HasColumnType("int");
 
                     b.Property<int>("CarpetArea")

@@ -2,20 +2,20 @@
 using Microsoft.EntityFrameworkCore;
 using RealEstateAPI.DomainModels.PropertyDtos;
 using RealEstateAPI.Models;
-using RealEstateAPI.Models.Property;
+using RealEstateAPI.Models.Property ;
 
 namespace RealEstateAPI.Repositories.PropertyRepo
 {
-    public class City : ICityRepo
+    public class CityRepo : ICityRepo
     {
         private static Response response = new Response();
 
         private readonly ApplicationDbContext db;
-        private readonly IMapper mapper;
-        public City(ApplicationDbContext _db,IMapper _mapper)
+        
+        public CityRepo(ApplicationDbContext _db)
         {
             db = _db;
-            mapper = _mapper;
+            
         }
 
         public Response CreateResponse(string message, int code, dynamic data, string error)
@@ -37,7 +37,7 @@ namespace RealEstateAPI.Repositories.PropertyRepo
             }
             else { return CreateResponse("", StatusCodes.Status404NotFound, null, "No cities found"); }
         }
-        public async Task<Response> AddCityAsync(Cities city)
+        public async Task<Response> AddCityAsync(City city)
         {
             var cities = await db.Cities.AddAsync(city);
             db.SaveChanges();

@@ -14,11 +14,11 @@ namespace RealEstateAPI.Controllers.PropertyModule
     {
 
         private readonly ICityRepo cityRepo;
-        private readonly IMapper mapper;
-        public CityController(ICityRepo _cityRepo,IMapper _mapper)
+        
+        public CityController(ICityRepo _cityRepo)
         {
             cityRepo = _cityRepo;
-            mapper = _mapper;
+           
         }
 
         [HttpGet("GetCities")]
@@ -31,7 +31,7 @@ namespace RealEstateAPI.Controllers.PropertyModule
 
         [HttpPost("AddCity")]
 
-        public async Task<IActionResult> AddCity(Cities city)
+        public async Task<IActionResult> AddCity(City city)
         {
             var fetchedCity = await cityRepo.AddCityAsync(city);
             return Ok(fetchedCity); 

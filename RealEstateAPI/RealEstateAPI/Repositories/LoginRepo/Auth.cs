@@ -15,12 +15,12 @@ using System.Security.Claims;
 
 namespace RealEstateAPI.Repositories.LoginRepo
 {
-    public class Auth : IAuthRepo
+    public class AuthRepo : IAuthRepo
     {
         private static Response response = new Response();
 
         private readonly ApplicationDbContext db;
-        public Auth(ApplicationDbContext _db)
+        public AuthRepo(ApplicationDbContext _db)
         {
             db = _db;
            

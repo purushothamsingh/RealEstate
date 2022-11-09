@@ -14,11 +14,11 @@ namespace RealEstateAPI.Controllers.PropertyModule
     {
 
         private readonly ICityRepo cityRepo;
-        private readonly IMapper mapper;
-        public CityController(ICityRepo _cityRepo,IMapper _mapper)
+        
+        public CityController(ICityRepo _cityRepo)
         {
             cityRepo = _cityRepo;
-            mapper = _mapper;
+           
         }
 
         [HttpGet("GetCities")]

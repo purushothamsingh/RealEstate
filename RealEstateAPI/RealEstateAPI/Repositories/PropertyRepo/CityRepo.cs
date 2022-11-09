@@ -11,11 +11,11 @@ namespace RealEstateAPI.Repositories.PropertyRepo
         private static Response response = new Response();
 
         private readonly ApplicationDbContext db;
-        private readonly IMapper mapper;
-        public CityRepo(ApplicationDbContext _db,IMapper _mapper)
+        
+        public CityRepo(ApplicationDbContext _db)
         {
             db = _db;
-            mapper = _mapper;
+            
         }
 
         public Response CreateResponse(string message, int code, dynamic data, string error)

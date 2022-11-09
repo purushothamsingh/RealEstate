@@ -14,6 +14,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(x => x.UseSqlServer(builder.
 builder.Services.AddScoped<IAuthRepo, Auth>();
 builder.Services.AddScoped<ICityRepo, CityRepo>();
 builder.Services.AddScoped<IPropertyRepo, PropertyRepo>();
+builder.Services.AddScoped<IPropertyTypeRepo, PropertyTypeRepo>();
+builder.Services.AddScoped<IFurnishingTypeRepo, FurnishingTypeRepo>();
 builder.Services.AddCors(
     (options) =>
     {

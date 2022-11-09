@@ -2,11 +2,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MimeKit.Cryptography;
 using RealEstateAPI.DomainModels.PropertyDtos;
 using RealEstateAPI.Models;
+using RealEstateAPI.Models.Property;
 using RealEstateAPI.Repositories.PropertyRepo;
 using System.Runtime.CompilerServices;
+using Property = RealEstateAPI.Models.Property.Property;
 
 namespace RealEstateAPI.Controllers.PropertyModule
 {
@@ -36,6 +39,17 @@ namespace RealEstateAPI.Controllers.PropertyModule
             var property = await _repo.GetPropertyDetailAsync(id);
             var propertyDTO = mapper.Map<PropertyDetailDto>(property.Data);
             return Ok(propertyDTO);
+        }
+
+        [HttpPost("add")]
+        public async Task<IActionResult> AddProperty(PropertyDto propertyDto)
+        {
+            var property = mapper.Map<Property>(propertyDto);
+            property.PostedBy = 1;
+            property.LastUpdatedBy = 1;
+            _repo.AddProperty(property);
+            return StatusCode(201);
+
         }
     }
 }

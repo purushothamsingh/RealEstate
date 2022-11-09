@@ -41,7 +41,8 @@ namespace RealEstateAPI.Repositories.PropertyRepo
 
         public void AddProperty(Property property)
         {
-            throw new NotImplementedException();
+            _context.Properties.Add(property);
+            _context.SaveChanges();
         }
 
         public void DeleteProperty(int id)

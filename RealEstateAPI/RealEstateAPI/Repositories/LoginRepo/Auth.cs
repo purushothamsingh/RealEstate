@@ -9,6 +9,9 @@ using RealEstateAPI.Models.AuthModels;
 using System.Security.Cryptography;
 using MailKit.Net.Smtp;
 using RealEstateAPI.Controllers.LoginModule;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace RealEstateAPI.Repositories.LoginRepo
 {
@@ -94,7 +97,27 @@ namespace RealEstateAPI.Repositories.LoginRepo
 
                 bool isvalid = DecriptPassword(obj,req.Password);
 
-                if (isvalid) { return CreateResponse("User Found", StatusCodes.Status302Found, req, ""); }
+                if (isvalid) {
+
+                    List<Claim> claims = new List<Claim>
+            {
+                //new Claim (ClaimTypes.Name,req.UserName),
+                new Claim("Name",req.UserName),
+                new Claim("Id",user.Id.ToString())
+               // new Claim (ClaimTypes.Email,req.Email)
+               
+            };
+                    var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("mytoken idkaldkhodsildbjafso"));
+                    var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+                    var token = new JwtSecurityToken(
+                        claims: claims,
+                        expires: DateTime.Now.AddMinutes(10),
+                        signingCredentials: cred);
+                    var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+                    return CreateResponse("User Found", StatusCodes.Status302Found, jwt, ""); 
+                
+                }
 
                 else { return CreateResponse("", StatusCodes.Status404NotFound, "", "User not found"); }
             }

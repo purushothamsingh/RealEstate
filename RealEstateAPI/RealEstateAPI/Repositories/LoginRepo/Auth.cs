@@ -94,6 +94,11 @@ namespace RealEstateAPI.Repositories.LoginRepo
             else if(user.Result)
             { 
                 var obj = db.Db_Registers.Where(x => x.UserName.ToLower() == req.UserName.ToLower()).Select(x => x);
+                var id = 0;
+                foreach(var i in obj)
+                {
+                    id = i.ID;
+                }
 
                 bool isvalid = DecriptPassword(obj,req.Password);
 
@@ -103,7 +108,7 @@ namespace RealEstateAPI.Repositories.LoginRepo
             {
                 //new Claim (ClaimTypes.Name,req.UserName),
                 new Claim("Name",req.UserName),
-                new Claim("Id",user.Id.ToString())
+                new Claim("Id",id.ToString())
                // new Claim (ClaimTypes.Email,req.Email)
                
             };

@@ -11,8 +11,6 @@ namespace RealEstateAPI.Models.Property
         public DateTime LastUpdatedOn { get; set; } = DateTime.Now;
         public int LastUpdatedBy { get; set; }   =0;
         [Required]
-        public string PublicId { get; set; }
-        [Required]
         public string ImageUrl { get; set; }
         public bool IsPrimary { get; set; }
         public int PropertyId { get; set; }

@@ -2,18 +2,14 @@
 
 namespace RealEstateAPI.Models.Property
 {
-    public class Cities
+    public class PropertyType
     {
         [Key]
         public int Id { get; set; }
+     
         [Required]
         public string Name { get; set; }
-
-        [Required]
-        public string Country { get; set; }
-
-        public DateTime LastUpdatedOn { get; set; }
-
-        public int LastUpdatedBy { get; set; }
+        public DateTime LastUpdatedOn { get; set; } = DateTime.Now;
+        public int LastUpdatedBy { get; set; } = 0;
     }
 }

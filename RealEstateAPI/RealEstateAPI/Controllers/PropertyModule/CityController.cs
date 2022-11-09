@@ -31,7 +31,7 @@ namespace RealEstateAPI.Controllers.PropertyModule
 
         [HttpPost("AddCity")]
 
-        public async Task<IActionResult> AddCity(Cities city)
+        public async Task<IActionResult> AddCity(City city)
         {
             var fetchedCity = await cityRepo.AddCityAsync(city);
             return Ok(fetchedCity); 

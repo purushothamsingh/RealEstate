@@ -101,7 +101,9 @@ namespace RealEstateAPI.Repositories.LoginRepo
 
                     List<Claim> claims = new List<Claim>
             {
-                new Claim (ClaimTypes.Name,req.UserName),
+                //new Claim (ClaimTypes.Name,req.UserName),
+                new Claim("Name",req.UserName),
+                new Claim("Id",user.Id.ToString())
                // new Claim (ClaimTypes.Email,req.Email)
                
             };
@@ -109,7 +111,7 @@ namespace RealEstateAPI.Repositories.LoginRepo
                     var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
                     var token = new JwtSecurityToken(
                         claims: claims,
-                        expires: DateTime.Now.AddSeconds(10),
+                        expires: DateTime.Now.AddMinutes(10),
                         signingCredentials: cred);
                     var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 

@@ -8,8 +8,8 @@ namespace RealEstateAPI.Repositories.PropertyRepo
     public interface IPropertyRepo
     {
         Task<Response> GetPropertiesByIdAsync(int cityId);
-        void AddProperty(Property property);
-        void DeleteProperty(int id);
+        Task<Response> AddProperty(Property property);
+        Task<Response> DeleteProperty(int id);
         Task<Response> GetPropertyDetailAsync(int id);
     }
 }

@@ -39,13 +39,14 @@ namespace RealEstateAPI.Repositories.PropertyRepo
             return CreateResponse("", StatusCodes.Status404NotFound, "", "Property not Found");
         }
 
-        public void AddProperty(Property property)
+        public async Task<Response> AddProperty(Property property)
         {
-            _context.Properties.Add(property);
+           await _context.Properties.AddAsync(property);
             _context.SaveChanges();
+            return CreateResponse("Added Property successfully",StatusCodes.Status201Created,property,"");
         }
 
-        public void DeleteProperty(int id)
+        public Task<Response> DeleteProperty(int id)
         {
             throw new NotImplementedException();
         }

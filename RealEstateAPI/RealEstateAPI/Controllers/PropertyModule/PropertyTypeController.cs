@@ -23,7 +23,8 @@ namespace RealEstateAPI.Controllers.PropertyModule
         {
             var PropertyTypes = await _repo.GetPropertyTypesAsync();
             var PropertyTypesDto = mapper.Map<IEnumerable<KeyValuePairDto>>(PropertyTypes.Data);
-            return Ok(PropertyTypesDto);
+            PropertyTypes.Data= PropertyTypesDto;
+            return Ok(PropertyTypes);
         }
     }
 }

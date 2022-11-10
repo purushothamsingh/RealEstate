@@ -39,6 +39,30 @@ namespace RealEstateAPI.Repositories.PropertyRepo
             return CreateResponse("", StatusCodes.Status404NotFound, "", "Property not Found");
         }
 
-        
+        public void AddProperty(Property property)
+        {
+            _context.Properties.Add(property);
+            _context.SaveChanges();
+        }
+
+        public void DeleteProperty(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<Response> GetPropertyDetailAsync(int id)
+        {
+            var property = await _context.Properties
+                .Include(p => p.PropertyType)
+                .Include(p => p.City)
+                .Include(p => p.FurnishingType)
+                .Where(p => p.Id == id)
+                .FirstAsync();
+            if (property != null)
+            {
+                return CreateResponse("Property Found", StatusCodes.Status302Found, property, "");
+            }
+            return CreateResponse("", StatusCodes.Status404NotFound, "", "Property not Found");
+        }
     }
 }

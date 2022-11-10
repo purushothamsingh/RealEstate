@@ -11,9 +11,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 builder.Services.AddDbContext<ApplicationDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("Myconn")));
-builder.Services.AddScoped<IAuthRepo, AuthRepo>();
+builder.Services.AddScoped<IAuthRepo, Auth>();
 builder.Services.AddScoped<ICityRepo, CityRepo>();
 builder.Services.AddScoped<IPropertyRepo, PropertyRepo>();
+builder.Services.AddScoped<IPropertyTypeRepo, PropertyTypeRepo>();
+builder.Services.AddScoped<IFurnishingTypeRepo, FurnishingTypeRepo>();
 builder.Services.AddCors(
     (options) =>
     {

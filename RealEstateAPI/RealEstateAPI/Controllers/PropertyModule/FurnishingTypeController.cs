@@ -23,7 +23,8 @@ namespace RealEstateAPI.Controllers.PropertyModule
         {
             var FurnishingTypes = await _repo.GetFurnishingTypesAsync();
             var FurnishingTypesDto = mapper.Map<IEnumerable<KeyValuePairDto>>(FurnishingTypes.Data);
-            return Ok(FurnishingTypesDto);
+            FurnishingTypes.Data= FurnishingTypesDto;
+            return Ok(FurnishingTypes);
         }
     }
 }

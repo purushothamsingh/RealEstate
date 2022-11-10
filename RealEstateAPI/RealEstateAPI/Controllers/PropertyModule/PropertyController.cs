@@ -30,7 +30,8 @@ namespace RealEstateAPI.Controllers.PropertyModule
         {
             var properties = await _repo.GetPropertiesByIdAsync(SellRent);
             var propertyListDto = mapper.Map<IEnumerable<PropertyListDto>>(properties.Data);
-            return Ok(propertyListDto);
+            properties.Data= propertyListDto;
+            return Ok(properties);
         }
 
         [HttpGet("detail/{id}")]
@@ -38,7 +39,8 @@ namespace RealEstateAPI.Controllers.PropertyModule
         {
             var property = await _repo.GetPropertyDetailAsync(id);
             var propertyDTO = mapper.Map<PropertyDetailDto>(property.Data);
-            return Ok(propertyDTO);
+            property.Data= propertyDTO;
+            return Ok(property);
         }
 
         [HttpPost("add")]
@@ -47,8 +49,8 @@ namespace RealEstateAPI.Controllers.PropertyModule
             var property = mapper.Map<Property>(propertyDto);
             property.PostedBy = 1;
             property.LastUpdatedBy = 1;
-            _repo.AddProperty(property);
-            return StatusCode(201);
+            var addedProperty=_repo.AddProperty(property);
+            return Ok(addedProperty);
 
         }
     }

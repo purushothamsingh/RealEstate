@@ -4,6 +4,8 @@ using RealEstateAPI.Models;
 using RealEstateAPI.Helper;
 using RealEstateAPI.Repositories.LoginRepo;
 using RealEstateAPI.Repositories.PropertyRepo;
+using RealEstateAPI.Repositories.PhotoRepo;
+using RealEstateAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -16,6 +18,7 @@ builder.Services.AddScoped<ICityRepo, CityRepo>();
 builder.Services.AddScoped<IPropertyRepo, PropertyRepo>();
 builder.Services.AddScoped<IPropertyTypeRepo, PropertyTypeRepo>();
 builder.Services.AddScoped<IFurnishingTypeRepo, FurnishingTypeRepo>();
+builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddCors(
     (options) =>
     {

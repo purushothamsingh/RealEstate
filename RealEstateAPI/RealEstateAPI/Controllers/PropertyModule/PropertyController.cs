@@ -47,7 +47,6 @@ namespace RealEstateAPI.Controllers.PropertyModule
         }
 
         [HttpPost("add")]
-        [Authorize]
         public async Task<IActionResult> AddProperty(PropertyDto propertyDto)
         {
             var property = _mapper.Map<Property>(propertyDto);
@@ -58,7 +57,7 @@ namespace RealEstateAPI.Controllers.PropertyModule
         }
 
         [HttpPost("add/photo/{id}")]
-        [Authorize]
+
         public async Task<IActionResult> AddPropertyPhoto(IFormFile file, int propId)
         {
             var result = await photoService.UploadPhotoAsync(file);
@@ -66,7 +65,7 @@ namespace RealEstateAPI.Controllers.PropertyModule
             {
                 return BadRequest(result.Error.Message);
             }
-            return Ok(result);
+            return Ok(201);
         }
     }
 }

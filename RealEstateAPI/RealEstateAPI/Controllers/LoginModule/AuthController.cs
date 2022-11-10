@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RealEstateAPI.DomainModels;
+using RealEstateAPI.DomainModels.PropertyDtos;
 using RealEstateAPI.Models;
 using RealEstateAPI.Models.AuthModels;
 using RealEstateAPI.Repositories.LoginRepo;
@@ -15,11 +16,13 @@ namespace RealEstateAPI.Controllers.LoginModule
     {
 
         private readonly IAuthRepo authRepo;
+        private readonly IMapper mapper;
 
         public static int SaveOtp;
-        public AuthController(IAuthRepo _authRepo)
+        public AuthController(IAuthRepo _authRepo, IMapper mapper)
         {
             authRepo = _authRepo;
+            this.mapper = mapper;
         }
         [HttpPost("Register")]
      public async Task<IActionResult>AddUser(DomainRegister req)
@@ -55,6 +58,16 @@ namespace RealEstateAPI.Controllers.LoginModule
                 return Ok(request.Message);
             }
             return Ok(request);
+
+        }
+
+        [HttpGet("user/{id}")]
+        public async Task<IActionResult> GetUserById(int id) { 
+
+            var user = await authRepo.GetUserByIdAsync(id);
+            var userDTO = mapper.Map<UserDto>(user.Data);
+            user.Data = userDTO;
+            return Ok(user);
 
         }
 

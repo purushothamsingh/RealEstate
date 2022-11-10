@@ -11,12 +11,22 @@ namespace RealEstateAPI.Services
         public PhotoService(IConfiguration config)
         {
             Account account = new Account(
-                config.GetSection("CloudinarySettings:CloudName").Value,
-                config.GetSection("CloudinarySettings:ApiKey").Value,
-                config.GetSection("CloudinarySettings:ApiSecret").Value);  
+                 "drn3bc1nj",
+            "141665214458799",
+            "tNXJvyvIqXYfqHNiQgAA5Uc8QdU");  
             
             cloudinary = new Cloudinary(account);
         }
+
+        public async Task<DeletionResult> DeletePhotoAsync(string publicId)
+        {
+            var deleteParams = new DeletionParams(publicId);
+
+            var result = await cloudinary.DestroyAsync(deleteParams);
+
+            return result;
+        }
+
         public async Task<ImageUploadResult> UploadPhotoAsync(IFormFile photo)
         {
             var uploadResult = new ImageUploadResult();

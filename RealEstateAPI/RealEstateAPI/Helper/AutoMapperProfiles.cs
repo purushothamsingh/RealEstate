@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using RealEstateAPI.DomainModels;
 using RealEstateAPI.DomainModels.PropertyDtos;
+using RealEstateAPI.Models.AuthModels;
 using RealEstateAPI.Models.Property;
 
 namespace RealEstateAPI.Helper
@@ -25,6 +27,8 @@ namespace RealEstateAPI.Helper
             CreateMap<PropertyType, KeyValuePairDto>().ReverseMap();
 
             CreateMap<FurnishingType, KeyValuePairDto>().ReverseMap();
+
+            CreateMap<Db_Register, UserDto>().ReverseMap();
         }
     }
 }

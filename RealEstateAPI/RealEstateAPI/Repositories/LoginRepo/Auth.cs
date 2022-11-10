@@ -203,5 +203,16 @@ namespace RealEstateAPI.Repositories.LoginRepo
 
             return CreateResponse("Invalid Email", StatusCodes.Status404NotFound, "", "Email Not found");
         }
+
+        public async Task<Response> GetUserByIdAsync(int id)
+        {
+            var user = await db.Db_Registers.FindAsync(id);
+            if (user != null)
+            {
+                return CreateResponse("User Found", StatusCodes.Status302Found, user, "");
+            }
+            return CreateResponse("", StatusCodes.Status404NotFound, "", "User not Found");
+
+        }
     }
 }

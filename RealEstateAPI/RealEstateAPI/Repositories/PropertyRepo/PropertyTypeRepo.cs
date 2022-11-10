@@ -30,9 +30,9 @@ namespace RealEstateAPI.Repositories.PropertyRepo
 
             if (propertyTypes != null)
             {
-                return CreateResponse("Property Found", StatusCodes.Status302Found, propertyTypes, "");
+                return CreateResponse("Property Type Found", StatusCodes.Status302Found, propertyTypes, "");
             }
-            return CreateResponse("", StatusCodes.Status404NotFound, "", "Property not Found");
+            return CreateResponse("", StatusCodes.Status404NotFound, "", "Property Type not Found");
         }
     }
 }

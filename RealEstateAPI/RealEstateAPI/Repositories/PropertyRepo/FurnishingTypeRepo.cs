@@ -29,9 +29,9 @@ namespace RealEstateAPI.Repositories.PropertyRepo
 
             if (furnishingTypes != null)
             {
-                return CreateResponse("Property Found", StatusCodes.Status302Found, furnishingTypes, "");
+                return CreateResponse("Furnishing Type Found", StatusCodes.Status302Found, furnishingTypes, "");
             }
-            return CreateResponse("", StatusCodes.Status404NotFound, "", "Property not Found");
+            return CreateResponse("", StatusCodes.Status404NotFound, "", "Furnishing Type not Found");
         }
     }
 }

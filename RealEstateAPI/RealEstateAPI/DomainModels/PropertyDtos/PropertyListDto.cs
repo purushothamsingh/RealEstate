@@ -19,6 +19,5 @@ namespace RealEstateAPI.DomainModels.PropertyDtos
         public bool ReadyToMove { get; set; }
         public string Photo { get; set; }
         public DateTime EstPossessionOn { get; set; }
-
     }
 }

@@ -1,19 +1,20 @@
-﻿using AutoMapper;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RealEstateAPI.Models;
 using RealEstateAPI.Models.Property;
+using RealEstateAPI.Repositories.PhotoRepo;
 
 namespace RealEstateAPI.Repositories.PropertyRepo
 {
     public class PropertyRepo : IPropertyRepo
     {
         private readonly ApplicationDbContext _context;
-        
         private static Response response = new Response();
-        public PropertyRepo(ApplicationDbContext context)
+        private readonly IPhotoService photoService;
+        public PropertyRepo(ApplicationDbContext context, IPhotoService photoService)
         {
             _context = context;
-           
+            this.photoService = photoService; 
         }
         public Response CreateResponse(string message, int code, dynamic data, string error)
         {
@@ -30,7 +31,8 @@ namespace RealEstateAPI.Repositories.PropertyRepo
             var properties = await _context.Properties
                 .Include(p => p.PropertyType)
                 .Include(p => p.City)
-                .Include(p => p.FurnishingType)                
+                .Include(p => p.FurnishingType)  
+                .Include(p => p.Photos)
                 .Where(p => p.SellRent == id).ToListAsync();
             if(properties != null)
             {
@@ -57,6 +59,7 @@ namespace RealEstateAPI.Repositories.PropertyRepo
                 .Include(p => p.PropertyType)
                 .Include(p => p.City)
                 .Include(p => p.FurnishingType)
+                .Include(p => p.Photos)
                 .Where(p => p.Id == id)
                 .FirstAsync();
             if (property != null)

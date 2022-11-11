@@ -4,7 +4,8 @@ using RealEstateAPI.Models.AuthModels;
 
 namespace RealEstateAPI.Repositories.LoginRepo
 {
-    public interface IAuthRepo
+    public interface IAuthRepo<Auth>
+
     {
 
         Task<Response> RegisterUserAsync(DomainRegister req);

@@ -14,10 +14,10 @@ namespace RealEstateAPI.Controllers.LoginModule
     public class AuthController : ControllerBase
     {
 
-        private readonly IAuthRepo authRepo;
+        private readonly IAuthRepo<Auth> authRepo;
 
         public static int SaveOtp;
-        public AuthController(IAuthRepo _authRepo)
+        public AuthController(IAuthRepo<Auth> _authRepo)
         {
             authRepo = _authRepo;
         }

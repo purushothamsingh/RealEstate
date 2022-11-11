@@ -16,7 +16,7 @@ using Org.BouncyCastle.Bcpg;
 
 namespace RealEstateAPI.Repositories.LoginRepo
 {
-    public class Auth : IAuthRepo
+    public class Auth : IAuthRepo<Auth>
     {
         public static int userId = 0;
         private static Response response = new Response();

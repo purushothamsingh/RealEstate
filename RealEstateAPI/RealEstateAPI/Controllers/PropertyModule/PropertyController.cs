@@ -78,7 +78,7 @@ namespace RealEstateAPI.Controllers.PropertyModule
                 .Include(p => p.FurnishingType)
                 .Include(p => p.Photos)
                 .Where(p => p.Id == propId)
-                .FirstAsync();
+                .FirstOrDefaultAsync();
 
             var photo = new Photo
             {
@@ -124,7 +124,7 @@ namespace RealEstateAPI.Controllers.PropertyModule
             if(currentPrimary != null) currentPrimary.IsPrimary = false;
             photo.IsPrimary = true;
 
-            if (IsPhoto == true)
+            if (photo != null)
             {
                 await _context.SaveChangesAsync();
                 return NoContent();
@@ -166,7 +166,7 @@ namespace RealEstateAPI.Controllers.PropertyModule
                 if (result.Error != null) return BadRequest(result.Error.Message);
             }
 
-            if(IsPhoto == true)
+            if(photo != null)
             {
                 property.Photos.Remove(photo);
                 await _context.SaveChangesAsync();

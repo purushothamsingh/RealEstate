@@ -17,5 +17,8 @@ namespace RealEstateAPI.DomainModels.PropertyDtos
         public int Age { get; set; }
         public string Description { get; set; }
 
+        public int PostedBy { get; set; }
+
+
     }
 }

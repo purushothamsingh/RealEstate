@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using RealEstateAPI.Models;
 using RealEstateAPI.Models.Property;
+using System.Security.Claims;
 
 namespace RealEstateAPI.Repositories.PropertyRepo
 {
@@ -65,5 +66,7 @@ namespace RealEstateAPI.Repositories.PropertyRepo
             }
             return CreateResponse("", StatusCodes.Status404NotFound, "", "Property not Found");
         }
+
+      
     }
 }

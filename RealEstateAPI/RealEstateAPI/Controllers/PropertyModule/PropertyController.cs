@@ -10,8 +10,9 @@ using RealEstateAPI.Models;
 using RealEstateAPI.Models.Property;
 using RealEstateAPI.Repositories.PhotoRepo;
 using RealEstateAPI.Repositories.PropertyRepo;
-using System.Runtime.CompilerServices;
 using Property = RealEstateAPI.Models.Property.Property;
+using System.Security.Claims;
+
 
 namespace RealEstateAPI.Controllers.PropertyModule
 {
@@ -30,6 +31,10 @@ namespace RealEstateAPI.Controllers.PropertyModule
             this.photoService = photoService;
             _context = context;
         }
+        //protected int GetUserId()
+        //{
+        //    return int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+        //}
 
         [HttpGet("list/{SellRent}")]
         public async Task<IActionResult> GetPropertyList(int SellRent)
@@ -90,6 +95,85 @@ namespace RealEstateAPI.Controllers.PropertyModule
             _context.SaveChanges();
 
             return StatusCode(201);
+        }
+
+        [HttpPost("set-primary-photo/{propId}/{photoPublicId}")]
+        public async Task<IActionResult> SetPrimaryPhoto(int propId, string photoPublicId)
+        {
+            bool IsPhoto = false;
+            //var userId = GetUserId();
+            var property = await _context.Properties
+            .Include(p => p.Photos)
+            .Where(p => p.Id == propId)
+            .FirstOrDefaultAsync();
+
+            if (property == null)
+                return BadRequest("No such property or photo exists");
+
+            //if (property.PostedBy != userId)
+            //    return BadRequest("You are not authorised to change the photo");
+
+            var photo = property.Photos.FirstOrDefault(p => p.PublicId == photoPublicId);
+
+            if (photo == null)
+                return BadRequest("No such property or photo exists");
+            if (photo.IsPrimary)
+                return BadRequest("This is already a primary photo");
+
+            var currentPrimary = property.Photos.FirstOrDefault(p => p.IsPrimary);
+            if(currentPrimary != null) currentPrimary.IsPrimary = false;
+            photo.IsPrimary = true;
+
+            if (IsPhoto == true)
+            {
+                await _context.SaveChangesAsync();
+                return NoContent();
+            }
+            else
+            {
+                return BadRequest("Some error has occured, failed to set primary photo");
+            }
+
+        }
+
+        [HttpDelete("delete-photo/{propId}/{photoPublicId}")]
+        public async Task<IActionResult> DeletePhoto(int propId, string photoPublicId)
+        {
+            //var userId = GetUserId();
+            bool IsPhoto = false;
+            var property = await _context.Properties
+            .Include(p => p.Photos)
+            .Where(p => p.Id == propId)
+            .FirstOrDefaultAsync();
+
+            //if (property.PostedBy != userId)
+            //    return BadRequest("You are not authorised to delete the photo");
+
+            //if (property == null || property.PostedBy != userId)
+            //    return BadRequest("No such property or photo exists");
+
+            var photo = property.Photos.FirstOrDefault(p => p.PublicId == photoPublicId);
+
+            if (photo == null)
+                return BadRequest("No such property or photo exists");
+
+            if (photo.IsPrimary)
+                return BadRequest("You can not delete primary photo");
+
+            if (photo.PublicId != null)
+            {
+                var result = await photoService.DeletePhotoAsync(photo.PublicId);
+                if (result.Error != null) return BadRequest(result.Error.Message);
+            }
+
+            if(IsPhoto == true)
+            {
+                property.Photos.Remove(photo);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            else
+                return BadRequest("Failed to delete photo");
         }
     }
 }

@@ -12,7 +12,7 @@ using RealEstateAPI.Models;
 namespace RealEstateAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221109064605_SeedData")]
+    [Migration("20221111051718_SeedData")]
     partial class SeedData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

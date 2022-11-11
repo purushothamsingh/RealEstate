@@ -26,6 +26,8 @@ builder.Services.AddCors(
     }
     );
 
+builder.Logging.AddLog4Net();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

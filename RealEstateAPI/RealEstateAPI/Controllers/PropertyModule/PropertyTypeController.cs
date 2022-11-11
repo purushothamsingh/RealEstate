@@ -12,6 +12,7 @@ namespace RealEstateAPI.Controllers.PropertyModule
     {
         private readonly IPropertyTypeRepo _repo;
         private readonly IMapper mapper;
+        private static readonly log4net.ILog _log4net = log4net.LogManager.GetLogger(typeof(PropertyTypeController));
         public PropertyTypeController(IPropertyTypeRepo repo, IMapper _mapper)
         {
             _repo = repo;
@@ -21,6 +22,9 @@ namespace RealEstateAPI.Controllers.PropertyModule
         [HttpGet("list")]
         public async Task<IActionResult> GetPropertyTypes()
         {
+            _log4net.Info("------------------------------------------------------------------------------------");
+            _log4net.Info("Get Property Types method invoked");
+
             var PropertyTypes = await _repo.GetPropertyTypesAsync();
             var PropertyTypesDto = mapper.Map<IEnumerable<KeyValuePairDto>>(PropertyTypes.Data);
             PropertyTypes.Data= PropertyTypesDto;

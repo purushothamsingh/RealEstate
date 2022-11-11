@@ -8,7 +8,8 @@ namespace RealEstateAPI.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql(@"
+            migrationBuilder.Sql(
+                @"
 
             DECLARE @UserID as INT
             --------------------------
@@ -131,10 +132,9 @@ namespace RealEstateAPI.Migrations
             GETDATE(), --Posted on
             @UserID, --Posted by
             GETDATE(), --Last Updated on
-            @UserID --Last Updated by
+            @UserID --Last Updated by"
 
-
-");
+                );
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -146,7 +146,6 @@ delete from PropertyTypes where LastUpdatedBy=@UserID
 delete from FurnishingTypes where LastUpdatedBy=@UserID
 delete from Cities where LastUpdatedBy=@UserID
 delete from Properties where PostedBy=@UserId");
-
         }
     }
 }

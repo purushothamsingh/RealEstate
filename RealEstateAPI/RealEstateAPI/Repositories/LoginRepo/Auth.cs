@@ -12,11 +12,13 @@ using RealEstateAPI.Controllers.LoginModule;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Org.BouncyCastle.Bcpg;
 
 namespace RealEstateAPI.Repositories.LoginRepo
 {
-    public class Auth : IAuthRepo
+    public class Auth : IAuthRepo<Auth>
     {
+        public static int userId = 0;
         private static Response response = new Response();
 
         private readonly ApplicationDbContext db;
@@ -110,7 +112,9 @@ namespace RealEstateAPI.Repositories.LoginRepo
                 foreach(var i in obj)
                 {
                     id = i.ID;
+                   
                 }
+                Auth.userId = id;
 
                 bool isvalid = DecriptPassword(obj,req.Password);
 
@@ -120,10 +124,12 @@ namespace RealEstateAPI.Repositories.LoginRepo
             {
                 //new Claim (ClaimTypes.Name,req.UserName),
                 new Claim("Name",req.UserName),
-                new Claim("Id",id.ToString())
+                new Claim("Id",id.ToString()),
+               
                // new Claim (ClaimTypes.Email,req.Email)
                
             };
+                    
                     var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("mytoken idkaldkhodsildbjafso"));
                     var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
                     var token = new JwtSecurityToken(

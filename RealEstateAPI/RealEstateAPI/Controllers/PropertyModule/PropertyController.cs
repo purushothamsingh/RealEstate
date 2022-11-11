@@ -7,6 +7,7 @@ using MimeKit.Cryptography;
 using RealEstateAPI.DomainModels.PropertyDtos;
 using RealEstateAPI.Models;
 using RealEstateAPI.Models.Property;
+using RealEstateAPI.Repositories.LoginRepo;
 using RealEstateAPI.Repositories.PropertyRepo;
 using System.Runtime.CompilerServices;
 using Property = RealEstateAPI.Models.Property.Property;
@@ -54,6 +55,7 @@ namespace RealEstateAPI.Controllers.PropertyModule
             return Ok(property);
         }
 
+        [Authorize]        
         [HttpPost("add")]
         public async Task<IActionResult> AddProperty(PropertyDto propertyDto)
         {
@@ -61,9 +63,9 @@ namespace RealEstateAPI.Controllers.PropertyModule
             _log4net.Info("Add Property method invokded");           
 
             var property = mapper.Map<Property>(propertyDto);
-            property.PostedBy = 1;
-            property.LastUpdatedBy = 1;
-            var addedProperty=_repo.AddProperty(property);
+            property.PostedBy = Auth.userId;
+            property.LastUpdatedBy = Auth.userId;
+            var addedProperty= await _repo.AddProperty(property);
             return Ok(addedProperty);
 
         }

@@ -15,11 +15,13 @@ namespace RealEstateAPI.Controllers.LoginModule
     public class AuthController : ControllerBase
     {
 
-        private readonly IAuthRepo authRepo;
+
+        private readonly IAuthRepo<Auth> authRepo;      
         private static readonly log4net.ILog _log4net = log4net.LogManager.GetLogger(typeof(AuthController));
 
+
         public static int SaveOtp;
-        public AuthController(IAuthRepo _authRepo)
+        public AuthController(IAuthRepo<Auth> _authRepo)
         {
             authRepo = _authRepo;
         }
@@ -54,7 +56,7 @@ namespace RealEstateAPI.Controllers.LoginModule
 
             return Ok(request);
         }
-        [HttpGet("GenerateOtp")]
+        [HttpGet("GenerateOtp/{email}")]
 
         public async Task<IActionResult> GenerateOtp(string email)
         {
@@ -65,7 +67,7 @@ namespace RealEstateAPI.Controllers.LoginModule
             if(request.Code == 200)
             {
                 SaveOtp = request.Data;
-                return Ok(request.Message);
+                return Ok(request);
             }
             return Ok(request);
 

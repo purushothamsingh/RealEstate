@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using RealEstateAPI.DomainModels.PropertyDtos;
+using RealEstateAPI.DomainModels.WishDto;
 using RealEstateAPI.Models.Property;
+using RealEstateAPI.Models.WishModule;
 
 namespace RealEstateAPI.Helper
 {
@@ -23,6 +25,9 @@ namespace RealEstateAPI.Helper
                .ForMember(d => d.FurnishingType, opt => opt.MapFrom(src => src.FurnishingType.Name));
             
             CreateMap<PropertyType, KeyValuePairDto>().ReverseMap();
+
+            CreateMap<PropertyType, KeyValuePairDto>().ReverseMap();
+
 
             CreateMap<FurnishingType, KeyValuePairDto>().ReverseMap();
         }

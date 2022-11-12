@@ -18,7 +18,7 @@ namespace RealEstateAPI.Repositories.PropertyRepo
             _context = context;
            
         }
-      
+
         public async Task<Response> GetPropertiesByIdAsync(int id)
         {
             _log4net.Info("Get Properties By Id Repository method invoked");

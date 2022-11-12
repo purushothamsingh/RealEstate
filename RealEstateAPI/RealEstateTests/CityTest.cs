@@ -57,16 +57,33 @@ namespace RealEstateTests
 
 
         [Fact]
-        public async Task GetAllCities_ShouldReturn200Status()
+        public async Task GetAllCities_ShouldReturn302Status()
         {
             var CityService = new Mock<ICityRepo>();
-                        CityService.Setup(x => x.GetCitiesAsync())
-                .ReturnsAsync(new Response("cities found", 
-                StatusCodes.Status302Found,CityList, ""));
+            CityService.Setup(x => x.GetCitiesAsync())
+            .ReturnsAsync(new Response("cities found",
+            StatusCodes.Status302Found, CityList, "")); 
             var citycon = new CityController(CityService.Object);
-            var res =await citycon.GetCities();
-            res.GetType().Should().Be(typeof(OkObjectResult));
+            var result = await citycon.GetCities();
+            var okObjectResult = result as OkObjectResult;
+            var response = okObjectResult.Value as Response;
+            Assert.Equal(StatusCodes.Status302Found,response.Code);
         }
+
+
+        [Fact]
+        public async Task GetAllCities_ShouldReturn404Status()
+        {
+            var CityService = new Mock<ICityRepo>();
+            CityService.Setup(x => x.GetCitiesAsync())
+            .ReturnsAsync(new Response("", StatusCodes.Status404NotFound,"", "No cities found"));
+            var citycon = new CityController(CityService.Object);
+            var result = await citycon.GetCities();
+            var okObjectResult = result as OkObjectResult;
+            var response = okObjectResult.Value as Response;
+            Assert.Equal(StatusCodes.Status404NotFound, response.Code);
+        }
+
 
 
         [Fact]
@@ -99,7 +116,7 @@ namespace RealEstateTests
 
 
         [Fact]
-        public async Task AddCity_ReturnExpectedValues()
+        public async Task AddCity_ShouldReturn201Status()
         {
             var CityService = new Mock<ICityRepo>();
             CityService.Setup(x => x.AddCityAsync(CityList[0])).ReturnsAsync(new Response("Added Successfully", StatusCodes.Status201Created, CityList[0], ""));
@@ -107,7 +124,7 @@ namespace RealEstateTests
             var result = await citycon.AddCity(CityList[0]);
             var okObjectResult = result as OkObjectResult;
             var response = okObjectResult.Value as Response;
-            Assert.Equal(response.Code, StatusCodes.Status201Created);
+            Assert.Equal(StatusCodes.Status201Created,response.Code);
 
         }
 

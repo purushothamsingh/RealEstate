@@ -26,7 +26,11 @@ namespace RealEstateAPI.Controllers.PropertyModule
             _log4net.Info("Get Property Types method invoked");
 
             var PropertyTypes = await _repo.GetPropertyTypesAsync();
-            var PropertyTypesDto = mapper.Map<IEnumerable<KeyValuePairDto>>(PropertyTypes.Data);
+            dynamic PropertyTypesDto="";
+            if (!PropertyTypes.Data.Equals(""))
+            {
+                PropertyTypesDto = mapper.Map<IEnumerable<KeyValuePairDto>>(PropertyTypes.Data);
+            }
             PropertyTypes.Data= PropertyTypesDto;
             return Ok(PropertyTypes);
         }

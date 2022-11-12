@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MimeKit.Cryptography;
 using RealEstateAPI.DomainModels.PropertyDtos;
+using RealEstateAPI.Migrations;
 using RealEstateAPI.Models;
 using RealEstateAPI.Models.Property;
 using RealEstateAPI.Repositories.LoginRepo;
@@ -37,8 +38,13 @@ namespace RealEstateAPI.Controllers.PropertyModule
 
 
             var properties = await _repo.GetPropertiesByIdAsync(SellRent);
-            var propertyListDto = mapper.Map<IEnumerable<PropertyListDto>>(properties.Data);
-            properties.Data= propertyListDto;
+            dynamic propertyDTO = "";
+            if (!properties.Data.Equals(""))
+            {
+
+                 propertyDTO = mapper.Map<IEnumerable<PropertyListDto>>(properties.Data);
+            }
+            properties.Data= propertyDTO;
             return Ok(properties);
         }
 
@@ -48,9 +54,12 @@ namespace RealEstateAPI.Controllers.PropertyModule
             _log4net.Info("------------------------------------------------------------------------------------");
             _log4net.Info("Get Property Detail based on Property Id invoked");
             _log4net.Info("Property Id: " + id);
-
-            var property = await _repo.GetPropertyDetailAsync(id);
-            var propertyDTO = mapper.Map<PropertyDetailDto>(property.Data);
+                var property = await _repo.GetPropertyDetailAsync(id);
+            dynamic propertyDTO = "";
+            if (!property.Data.Equals(""))
+            {
+                 propertyDTO = mapper.Map<PropertyDetailDto>(property.Data);
+            }
             property.Data= propertyDTO;
             return Ok(property);
         }
@@ -60,7 +69,7 @@ namespace RealEstateAPI.Controllers.PropertyModule
         public async Task<IActionResult> AddProperty(PropertyDto propertyDto)
         {
             _log4net.Info("------------------------------------------------------------------------------------");
-            _log4net.Info("Add Property method invokded");           
+            _log4net.Info("Add Property method invoked");           
 
             var property = mapper.Map<Property>(propertyDto);
             property.PostedBy = Auth.userId;

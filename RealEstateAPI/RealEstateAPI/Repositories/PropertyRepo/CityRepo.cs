@@ -34,7 +34,7 @@ namespace RealEstateAPI.Repositories.PropertyRepo
             }
             else {
                 _log4net.Error("404 Error: No Cities Found");
-                return new Response("", StatusCodes.Status404NotFound, null, "No cities found"); 
+                return new Response("", StatusCodes.Status404NotFound, "", "No cities found"); 
             }
         }
         public async Task<Response> AddCityAsync(City city)

@@ -17,16 +17,7 @@ namespace RealEstateTests
         private static Response response = new Response();
         protected readonly ApplicationDbContext _context;
         private List<City> CityList;
-        public Response CreateResponse(string message, int code, dynamic data, string error)
-        {
-            response.Message = message;
-            response.Code = code;
-            response.Data = data;
-            response.Error = error;
-
-            return response;
-        }
-
+       
         public CityTest()
         {
             CityList = new List<City>()
@@ -70,7 +61,7 @@ namespace RealEstateTests
         {
             var CityService = new Mock<ICityRepo>();
                         CityService.Setup(x => x.GetCitiesAsync())
-                .ReturnsAsync(CreateResponse("cities found", 
+                .ReturnsAsync(new Response("cities found", 
                 StatusCodes.Status302Found,CityList, ""));
             var citycon = new CityController(CityService.Object);
             var res =await citycon.GetCities();
@@ -111,7 +102,7 @@ namespace RealEstateTests
         public async Task AddCity_ReturnExpectedValues()
         {
             var CityService = new Mock<ICityRepo>();
-            CityService.Setup(x => x.AddCityAsync(CityList[0])).ReturnsAsync(CreateResponse("Added Successfully", StatusCodes.Status201Created, CityList[0], ""));
+            CityService.Setup(x => x.AddCityAsync(CityList[0])).ReturnsAsync(new Response("Added Successfully", StatusCodes.Status201Created, CityList[0], ""));
             var citycon = new CityController(CityService.Object);
             var result = await citycon.AddCity(CityList[0]);
             var okObjectResult = result as OkObjectResult;

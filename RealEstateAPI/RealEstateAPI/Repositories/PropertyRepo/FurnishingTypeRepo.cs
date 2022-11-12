@@ -16,7 +16,7 @@ namespace RealEstateAPI.Repositories.PropertyRepo
             _context = context;
         }
 
-        
+
         public async Task<Response> GetFurnishingTypesAsync()
         {
             _log4net.Info("Get Furnishing Type Repository method invoked");

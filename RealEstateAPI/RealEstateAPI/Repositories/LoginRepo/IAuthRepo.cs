@@ -4,7 +4,7 @@ using RealEstateAPI.Models.AuthModels;
 
 namespace RealEstateAPI.Repositories.LoginRepo
 {
-    public interface IAuthRepo<Auth>
+    public interface IAuthRepo
 
     {
 

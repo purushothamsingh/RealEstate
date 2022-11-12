@@ -16,12 +16,12 @@ namespace RealEstateAPI.Controllers.LoginModule
     {
 
 
-        private readonly IAuthRepo<Auth> authRepo;      
+        private readonly IAuthRepo authRepo;      
         private static readonly log4net.ILog _log4net = log4net.LogManager.GetLogger(typeof(AuthController));
 
 
         public static int SaveOtp;
-        public AuthController(IAuthRepo<Auth> _authRepo)
+        public AuthController(IAuthRepo _authRepo)
         {
             authRepo = _authRepo;
         }

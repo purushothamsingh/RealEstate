@@ -16,7 +16,7 @@ using Org.BouncyCastle.Bcpg;
 
 namespace RealEstateAPI.Repositories.LoginRepo
 {
-    public class Auth : IAuthRepo<Auth>
+    public class Auth : IAuthRepo
     {
         public static int userId = 0;
         private static Response response = new Response();
@@ -79,7 +79,7 @@ namespace RealEstateAPI.Repositories.LoginRepo
                  db.Db_Registers.Add(registers);
                  db.SaveChanges();
                 _log4net.Info("User Added Successfully");
-                return new Response("User found", StatusCodes.Status201Created, registers, "");
+                return new Response("User added", StatusCodes.Status201Created, registers, "");
 
             }
         }

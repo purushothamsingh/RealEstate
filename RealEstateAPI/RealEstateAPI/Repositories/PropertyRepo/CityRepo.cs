@@ -21,8 +21,6 @@ namespace RealEstateAPI.Repositories.PropertyRepo
             
         }
 
-     
-
         public async Task<Response> GetCitiesAsync()
         {
             _log4net.Info("------------------------------------------------------------------------------------");

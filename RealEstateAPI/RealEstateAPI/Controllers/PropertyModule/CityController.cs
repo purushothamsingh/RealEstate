@@ -31,7 +31,7 @@ namespace RealEstateAPI.Controllers.PropertyModule
             
 
             var cities = await cityRepo.GetCitiesAsync();
-            return Ok(cities);
+            return Ok(cities.Data);
         }
 
         [HttpPost("AddCity")]

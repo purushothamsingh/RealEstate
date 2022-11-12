@@ -16,8 +16,6 @@ namespace RealEstateAPI.Repositories.PropertyRepo
             _context = context;
         }
 
-       
-
         public async Task<Response> GetPropertyTypesAsync()
         {
             _log4net.Info("Get Property Types Repository method invoked");

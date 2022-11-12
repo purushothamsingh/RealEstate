@@ -29,8 +29,6 @@ namespace RealEstateAPI.Repositories.LoginRepo
            
         }
 
-      
-
         private bool DecriptPassword(IQueryable<Db_Register> obj, string password)
         {
             _log4net.Info("Decrypt Password method invoked successfully");
@@ -74,7 +72,9 @@ namespace RealEstateAPI.Repositories.LoginRepo
                 if ( db.Db_Registers.FirstOrDefaultAsync(x => x.UserName.ToLower() == registers.UserName.ToLower()).Result != null){
 
                     _log4net.Error("406 - Not Acceptable: User already exist");
-                    return  new Response ("User Already exits", StatusCodes.Status406NotAcceptable, "", "Duplicate user found");
+
+                    return new Response("User Already exits", StatusCodes.Status406NotAcceptable, "", "Duplicate user found");
+
                 }
 
                  db.Db_Registers.Add(registers);

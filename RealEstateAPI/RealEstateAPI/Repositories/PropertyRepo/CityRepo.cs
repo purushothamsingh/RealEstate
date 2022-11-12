@@ -21,15 +21,7 @@ namespace RealEstateAPI.Repositories.PropertyRepo
             
         }
 
-        public Response CreateResponse(string message, int code, dynamic data, string error)
-        {
-            response.Message = message;
-            response.Code = code;
-            response.Data = data;
-            response.Error = error;
-
-            return response;
-        }
+     
 
         public async Task<Response> GetCitiesAsync()
         {
@@ -39,11 +31,11 @@ namespace RealEstateAPI.Repositories.PropertyRepo
             if(cites.Count >0 )
             {
                 _log4net.Info("Cities details found");
-                return CreateResponse("cities found", StatusCodes.Status302Found, cites, "");
+                return new Response("cities found", StatusCodes.Status302Found, cites, "");
             }
             else {
                 _log4net.Error("404 Error: No Cities Found");
-                return CreateResponse("", StatusCodes.Status404NotFound, null, "No cities found"); 
+                return new Response("", StatusCodes.Status404NotFound, null, "No cities found"); 
             }
         }
         public async Task<Response> AddCityAsync(City city)
@@ -52,7 +44,7 @@ namespace RealEstateAPI.Repositories.PropertyRepo
             var cities = await db.Cities.AddAsync(city);
             db.SaveChanges();
             _log4net.Info("City added Successfully");
-            return CreateResponse("Added Successfully", StatusCodes.Status201Created, city, "");
+            return new Response("Added Successfully", StatusCodes.Status201Created, city, "");
         }
         public async Task<Response> DeleteCityAsync(int CityId)
         {
@@ -63,11 +55,11 @@ namespace RealEstateAPI.Repositories.PropertyRepo
                 db.Remove(city);
                 db.SaveChanges();
                 _log4net.Info("City deleted successfully");
-                return CreateResponse("Deleted Successfully", StatusCodes.Status200OK, "", "");
+                return new Response("Deleted Successfully", StatusCodes.Status200OK, "", "");
             }
             else {
                 _log4net.Error("400 BadRequest: City not Found");
-                return CreateResponse("", StatusCodes.Status400BadRequest, "", "City Not Found"); 
+                return new Response("", StatusCodes.Status400BadRequest, "", "City Not Found"); 
             }
            
         }
@@ -86,10 +78,10 @@ namespace RealEstateAPI.Repositories.PropertyRepo
                 db.Cities.Update(fetchCity);
                 db.SaveChanges();
                 _log4net.Info("City Updated Successfully");
-                return CreateResponse("updated Successfully", StatusCodes.Status200OK, "", "");
+                return new Response("updated Successfully", StatusCodes.Status200OK, "", "");
             }
             _log4net.Error("204 - No Content: City Not Found");
-          return CreateResponse("", StatusCodes.Status204NoContent, "", "City Not Found");
+          return new Response("", StatusCodes.Status204NoContent, "", "City Not Found");
         }
 
 

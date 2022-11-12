@@ -16,15 +16,7 @@ namespace RealEstateAPI.Repositories.PropertyRepo
             _context = context;
         }
 
-        public Response CreateResponse(string message, int code, dynamic data, string error)
-        {
-            response.Message = message;
-            response.Code = code;
-            response.Data = data;
-            response.Error = error;
-
-            return response;
-        }
+       
 
         public async Task<Response> GetPropertyTypesAsync()
         {
@@ -34,10 +26,10 @@ namespace RealEstateAPI.Repositories.PropertyRepo
             if (propertyTypes != null)
             {
                 _log4net.Info("Property Types Found");
-                return CreateResponse("Property Types Found", StatusCodes.Status302Found, propertyTypes, "");
+                return new Response("Property Types Found", StatusCodes.Status302Found, propertyTypes, "");
             }
             _log4net.Error("404 Error: Property Types not found");
-            return CreateResponse("", StatusCodes.Status404NotFound, "", "Property Types not Found");
+            return new Response("", StatusCodes.Status404NotFound, "", "Property Types not Found");
         }
     }
 }

@@ -5,9 +5,11 @@ namespace RealEstateAPI.Models.Property
 {
     [Table("Photos")]
     public class Photo
-    {
+    { 
         [Key]
         public int Id { get; set; }
+        [Required]
+        public string PublicId { get; set; }
         public DateTime LastUpdatedOn { get; set; } = DateTime.Now;
         public int LastUpdatedBy { get; set; }   =0;
         [Required]

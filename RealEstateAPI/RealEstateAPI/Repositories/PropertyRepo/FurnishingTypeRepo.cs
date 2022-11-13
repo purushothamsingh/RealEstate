@@ -24,11 +24,13 @@ namespace RealEstateAPI.Repositories.PropertyRepo
 
             if (furnishingTypes != null)
             {
+
                 _log4net.Info("Property Found");
                 return new Response("Property Found", StatusCodes.Status302Found, furnishingTypes, "");
             }
             _log4net.Error("404 Error: Property not found");
             return new Response("", StatusCodes.Status404NotFound, "", "Property not Found");
+
         }
     }
 }

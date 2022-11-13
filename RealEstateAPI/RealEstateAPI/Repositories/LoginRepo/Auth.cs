@@ -225,5 +225,16 @@ namespace RealEstateAPI.Repositories.LoginRepo
             _log4net.Error("404 - Not Found; Invalid Email");
             return new Response("Invalid Email", StatusCodes.Status404NotFound, "", "Email Not found");
         }
+
+        public async Task<Response> GetUserByIdAsync(int id)
+        {
+            var user = await db.Db_Registers.FindAsync(id);
+            if (user != null)
+            {
+                return  new Response("User Found", StatusCodes.Status302Found, user, "");
+            }
+            return new Response("", StatusCodes.Status404NotFound, "", "User not Found");
+
+        }
     }
 }

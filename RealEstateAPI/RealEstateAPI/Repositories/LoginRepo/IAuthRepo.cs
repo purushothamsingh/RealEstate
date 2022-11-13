@@ -13,5 +13,7 @@ namespace RealEstateAPI.Repositories.LoginRepo
         Task<Response> ForgotPasswordAsync(string email,int otp,string password,string confirmpassword);
 
         Task<Response> GenerateOtpAsync(string email);
+
+        Task<Response> GetUserByIdAsync(int id);
     }
 } 

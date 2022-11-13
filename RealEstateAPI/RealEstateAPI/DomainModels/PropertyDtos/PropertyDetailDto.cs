@@ -19,5 +19,8 @@ namespace RealEstateAPI.DomainModels.PropertyDtos
         public int PostedBy { get; set; }
         public ICollection<PhotoDto> Photos { get; set; }
 
+        public int PostedBy { get; set; }
+
+
     }
 }

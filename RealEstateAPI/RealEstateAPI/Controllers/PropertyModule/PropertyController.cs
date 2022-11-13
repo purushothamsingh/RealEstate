@@ -6,9 +6,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MimeKit.Cryptography;
 using RealEstateAPI.DomainModels.PropertyDtos;
+using RealEstateAPI.Migrations;
 using RealEstateAPI.Models;
 using RealEstateAPI.Models.Property;
+
 using RealEstateAPI.Repositories.PhotoRepo;
+
+using RealEstateAPI.Repositories.LoginRepo;
+
 using RealEstateAPI.Repositories.PropertyRepo;
 using Property = RealEstateAPI.Models.Property.Property;
 using System.Security.Claims;
@@ -21,9 +26,11 @@ namespace RealEstateAPI.Controllers.PropertyModule
     public class PropertyController : ControllerBase
     {
         private readonly IPropertyRepo _repo;
+
         private readonly IMapper _mapper;
         private readonly IPhotoService photoService;
         private readonly ApplicationDbContext _context;
+         private static readonly log4net.ILog _log4net = log4net.LogManager.GetLogger(typeof(PropertyController));
         public PropertyController(IPropertyRepo repo, IMapper mapper, IPhotoService photoService, ApplicationDbContext context)
         {
             _repo = repo;
@@ -39,28 +46,52 @@ namespace RealEstateAPI.Controllers.PropertyModule
         [HttpGet("list/{SellRent}")]
         public async Task<IActionResult> GetPropertyList(int SellRent)
         {
+            _log4net.Info("------------------------------------------------------------------------------------");
+            _log4net.Info("Get Property List based on Sell(1)/Rent(2) invoked");
+            _log4net.Info("SellRent Id: " + SellRent);        
+
+
             var properties = await _repo.GetPropertiesByIdAsync(SellRent);
-            var propertyListDto = _mapper.Map<IEnumerable<PropertyListDto>>(properties.Data);
-            properties.Data= propertyListDto;
-            return Ok(properties);
+
+            dynamic propertyDTO = "";
+            if (!properties.Data.Equals(""))
+            {
+
+                 propertyDTO = mapper.Map<IEnumerable<PropertyListDto>>(properties.Data);
+            }
+            properties.Data= propertyDTO;
+           return Ok(properties);
         }
 
         [HttpGet("detail/{id}")]
         public async Task<IActionResult> GetPropertyDetail(int id)
         {
-            var property = await _repo.GetPropertyDetailAsync(id);
-            var propertyDTO = _mapper.Map<PropertyDetailDto>(property.Data);
-            property.Data = propertyDTO;
+
+            _log4net.Info("------------------------------------------------------------------------------------");
+            _log4net.Info("Get Property Detail based on Property Id invoked");
+            _log4net.Info("Property Id: " + id);
+                var property = await _repo.GetPropertyDetailAsync(id);
+            dynamic propertyDTO = "";
+            if (!property.Data.Equals(""))
+            {
+                 propertyDTO = mapper.Map<PropertyDetailDto>(property.Data);
+            }
+            property.Data= propertyDTO;
             return Ok(property);
         }
 
+        [Authorize]        
         [HttpPost("add")]
         public async Task<IActionResult> AddProperty(PropertyDto propertyDto)
         {
-            var property = _mapper.Map<Property>(propertyDto);
-            property.PostedBy = 1;
-            property.LastUpdatedBy = 1;
-            var addedProperty = _repo.AddProperty(property);
+
+            _log4net.Info("------------------------------------------------------------------------------------");
+            _log4net.Info("Add Property method invoked");           
+
+            var property = mapper.Map<Property>(propertyDto);
+            property.PostedBy = Auth.userId;
+            property.LastUpdatedBy = Auth.userId;
+            var addedProperty= await _repo.AddProperty(property);
             return Ok(addedProperty);
         }
 

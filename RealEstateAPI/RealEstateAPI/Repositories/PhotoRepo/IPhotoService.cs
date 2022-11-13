@@ -1,4 +1,5 @@
 ﻿using CloudinaryDotNet.Actions;
+using RealEstateAPI.Models;
 
 namespace RealEstateAPI.Repositories.PhotoRepo
 {

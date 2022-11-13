@@ -69,5 +69,15 @@ namespace RealEstateAPI.Controllers.PropertyModule
             return Ok(addedProperty);
 
         }
+
+        [HttpGet("listOfProperties/{postedById}")]
+        public async Task<IActionResult> getPropertiesByPostedById(int postedById)
+        {
+            var properties = await _repo.GetPropertyByPostedByIdAsync(postedById);
+            var propertyListDto = mapper.Map<IEnumerable<PropertyListDto>>(properties.Data);
+            properties.Data = propertyListDto;
+            return Ok(properties);
+
+        }
     }
 }

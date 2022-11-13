@@ -17,7 +17,7 @@ namespace RealEstateAPI.Controllers.WishModule
     {
         private readonly IWishRepo wishRepo;
         private readonly IMapper mapper;
-        private static readonly log4net.ILog _log4net = log4net.LogManager.GetLogger(typeof(AuthController));
+        private static readonly log4net.ILog _log4net = log4net.LogManager.GetLogger(typeof(WishController));
 
 
         public static int SaveOtp;
@@ -32,6 +32,8 @@ namespace RealEstateAPI.Controllers.WishModule
         [HttpPost()]
         public async Task<IActionResult> WishedData(WishedDto wishedData)
         {
+            _log4net.Info("------------------------------------------------------------------------------------");
+            _log4net.Info("WishedData method invoked");
 
             var data = await wishRepo.AddedWishAsync(wishedData);
 
@@ -41,6 +43,8 @@ namespace RealEstateAPI.Controllers.WishModule
         [HttpGet("userWished/{id:int}")]
         public async Task<IActionResult> WishedData(int id)
         {
+            _log4net.Info("------------------------------------------------------------------------------------");
+            _log4net.Info("WishedData Method Invoked");
 
             var data = await wishRepo.GetwishedList(id);
 

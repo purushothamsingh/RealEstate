@@ -23,7 +23,7 @@ namespace RealEstateAPI.Controllers.PropertyModule
         public async Task<IActionResult> GetPropertyTypes()
         {
             _log4net.Info("------------------------------------------------------------------------------------");
-            _log4net.Info("Get Property Types method invoked");
+            _log4net.Info("GetPropertyTypes method invoked");
 
             var PropertyTypes = await _repo.GetPropertyTypesAsync();
             dynamic PropertyTypesDto="";

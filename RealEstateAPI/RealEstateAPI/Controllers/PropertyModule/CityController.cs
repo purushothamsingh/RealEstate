@@ -27,7 +27,7 @@ namespace RealEstateAPI.Controllers.PropertyModule
         public async Task<IActionResult> GetCities()
         {
             _log4net.Info("------------------------------------------------------------------------------------");
-            _log4net.Info("Get Cities method invoked");
+            _log4net.Info("GetCities method invoked");
             
 
             var cities = await cityRepo.GetCitiesAsync();
@@ -39,7 +39,7 @@ namespace RealEstateAPI.Controllers.PropertyModule
         public async Task<IActionResult> AddCity(City city)
         {
             _log4net.Info("------------------------------------------------------------------------------------");
-            _log4net.Info("Add City method invoked");
+            _log4net.Info("AddCity method invoked");
             
 
             var fetchedCity = await cityRepo.AddCityAsync(city);
@@ -50,7 +50,7 @@ namespace RealEstateAPI.Controllers.PropertyModule
         public async Task<IActionResult> DeleteCity(int id)
         {
             _log4net.Info("------------------------------------------------------------------------------------");
-            _log4net.Info("Delete City based on Id invoked");
+            _log4net.Info("DeleteCity based on Id method invoked");
             _log4net.Info("Deleted City Id: " + id);
             
             var data = await cityRepo.DeleteCityAsync(id);
@@ -61,7 +61,7 @@ namespace RealEstateAPI.Controllers.PropertyModule
         public async Task<IActionResult> UpdateCity(int id, CityDto citydto)
         {
             _log4net.Info("------------------------------------------------------------------------------------");
-            _log4net.Info("Update City method invoked");
+            _log4net.Info("UpdateCity method invoked");
             _log4net.Info("Updated City Id: " + id);
 
             var Updateddata = await cityRepo.UpdateCityAsync(id, citydto);

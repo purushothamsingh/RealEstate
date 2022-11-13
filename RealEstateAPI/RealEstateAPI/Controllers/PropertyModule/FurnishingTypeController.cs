@@ -23,7 +23,7 @@ namespace RealEstateAPI.Controllers.PropertyModule
         public async Task<IActionResult> GetFurnishingTypes()
         {
             _log4net.Info("------------------------------------------------------------------------------------");
-            _log4net.Info("Get Furnishing Types method invoked");
+            _log4net.Info("GetFurnishingTypes method invoked");
 
             var FurnishingTypes = await _repo.GetFurnishingTypesAsync();
             dynamic furnishingTypesDTO = "";

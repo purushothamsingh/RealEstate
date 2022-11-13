@@ -231,9 +231,9 @@ namespace RealEstateAPI.Repositories.LoginRepo
             var user = await db.Db_Registers.FindAsync(id);
             if (user != null)
             {
-                return CreateResponse("User Found", StatusCodes.Status302Found, user, "");
+                return  new Response("User Found", StatusCodes.Status302Found, user, "");
             }
-            return CreateResponse("", StatusCodes.Status404NotFound, "", "User not Found");
+            return new Response("", StatusCodes.Status404NotFound, "", "User not Found");
 
         }
     }

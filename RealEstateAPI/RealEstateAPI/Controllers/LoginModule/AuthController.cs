@@ -33,7 +33,7 @@ namespace RealEstateAPI.Controllers.LoginModule
      public async Task<IActionResult>AddUser(DomainRegister req)
         {
             _log4net.Info("------------------------------------------------------------------------------------");
-            _log4net.Info("Add User method invoked");
+            _log4net.Info("AddUser method invoked");
 
             var user = await authRepo.RegisterUserAsync(req);                  
             return Ok(user);    
@@ -54,7 +54,7 @@ namespace RealEstateAPI.Controllers.LoginModule
         public async Task<IActionResult> ForgotPassword(string email,int otp, string password, string confirmpass )
         {
             _log4net.Info("------------------------------------------------------------------------------------");
-            _log4net.Info("Forgot Password method invoked");
+            _log4net.Info("ForgotPassword method invoked");
 
             var request = await authRepo.ForgotPasswordAsync(email, otp, password, confirmpass);
 
@@ -65,7 +65,7 @@ namespace RealEstateAPI.Controllers.LoginModule
         public async Task<IActionResult> GenerateOtp(string email)
         {
             _log4net.Info("------------------------------------------------------------------------------------");
-            _log4net.Info("Generate OTP method invoked");
+            _log4net.Info("GenerateOTP method invoked");
 
             var request = await authRepo.GenerateOtpAsync(email);
             if(request.Code == 200)
@@ -78,8 +78,10 @@ namespace RealEstateAPI.Controllers.LoginModule
         }
 
         [HttpGet("user/{id}")]
-        public async Task<IActionResult> GetUserById(int id) { 
-
+        public async Task<IActionResult> GetUserById(int id) 
+        {
+            _log4net.Info("------------------------------------------------------------------------------------");
+            _log4net.Info("GetUserById method invoked");
             var user = await authRepo.GetUserByIdAsync(id);
             var userDTO = mapper.Map<UserDto>(user.Data);
             user.Data = userDTO;

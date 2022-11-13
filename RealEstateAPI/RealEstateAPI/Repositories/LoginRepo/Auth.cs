@@ -31,7 +31,7 @@ namespace RealEstateAPI.Repositories.LoginRepo
 
         private bool DecriptPassword(IQueryable<Db_Register> obj, string password)
         {
-            _log4net.Info("Decrypt Password method invoked successfully");
+            _log4net.Info("DecryptPassword method invoked successfully");
             byte[] salt = new byte[32];
             byte[] hassedPassword = new byte[32];
             foreach (var i in obj)
@@ -43,7 +43,7 @@ namespace RealEstateAPI.Repositories.LoginRepo
             using (var hmac = new HMACSHA512(salt))
             {
                 var generatedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                _log4net.Info("Password hashed successfully");
+                _log4net.Info("Passwordhashed successfully");
 
                 return generatedHash.SequenceEqual(hassedPassword);
             }
@@ -53,9 +53,8 @@ namespace RealEstateAPI.Repositories.LoginRepo
         }
 
         public async Task<Response> RegisterUserAsync(DomainRegister request)
-        {
-            _log4net.Info("------------------------------------------------------------------------------------");
-            _log4net.Info("Register User Repository method invoked");
+        {            
+            _log4net.Info("RegisterUserAsync Repository method invoked");
 
             using (var hmac = new HMACSHA512())
             {
@@ -69,10 +68,9 @@ namespace RealEstateAPI.Repositories.LoginRepo
                 registers.IsRegister = true;
                 registers.Mobile = request.Mobile;
 
-                if ( db.Db_Registers.FirstOrDefaultAsync(x => x.UserName.ToLower() == registers.UserName.ToLower()).Result != null){
-
+                if ( db.Db_Registers.FirstOrDefaultAsync(x => x.UserName.ToLower() == registers.UserName.ToLower()).Result != null)
+                {
                     _log4net.Error("406 - Not Acceptable: User already exist");
-
                     return new Response("User Already exits", StatusCodes.Status406NotAcceptable, "", "Duplicate user found");
 
                 }
@@ -86,9 +84,8 @@ namespace RealEstateAPI.Repositories.LoginRepo
         }
 
         public async Task<Response> ValidateUserAsync(Login req)
-        {
-            _log4net.Info("------------------------------------------------------------------------------------");
-            _log4net.Info("Validate User Repository method invoked");
+        {            
+            _log4net.Info("ValidateUser Repository method invoked");
 
             var user =db.Db_Registers.AnyAsync(x => x.UserName.ToLower() == req.UserName.ToLower());
      
@@ -139,13 +136,16 @@ namespace RealEstateAPI.Repositories.LoginRepo
                     _log4net.Error("404 - Not Found: User Not Found"); 
                     return new Response("", StatusCodes.Status404NotFound, "", "User not found"); }
             }
-            else { return new Response(); }
+            else
+            {
+                return new Response(); 
+            }
            
         }
 
         public async Task<Response> ForgotPasswordAsync(string email,int myotp, string password, string confirmpassword)
         {
-            _log4net.Info("Forgot Password Repository method invoked");
+            _log4net.Info("ForgotPasswordAsync Repository method invoked");
             
             var mail = db.Db_Registers.AnyAsync(x => x.Email == email).Result;
             if(mail == false)
@@ -186,10 +186,7 @@ namespace RealEstateAPI.Repositories.LoginRepo
                 {
                     _log4net.Error("403 - Forbidden: Invalid OTP");
                     return new Response("", StatusCodes.Status403Forbidden, "", "Invalid Otp");
-                }
-
-
-               
+                }               
               
             }
            
@@ -198,7 +195,7 @@ namespace RealEstateAPI.Repositories.LoginRepo
 
         public async Task<Response> GenerateOtpAsync(string myemail)
         {
-            _log4net.Info("Generate OTP Repository method invoked");
+            _log4net.Info("GenerateOtpAsync Repository method invoked");
             if (db.Db_Registers.AnyAsync(x=>x.Email == myemail).Result)
             {                
                 Random randomNumber = new Random();
@@ -228,11 +225,14 @@ namespace RealEstateAPI.Repositories.LoginRepo
 
         public async Task<Response> GetUserByIdAsync(int id)
         {
+            _log4net.Info("GetUserByIdAsync Repository method invoked");
             var user = await db.Db_Registers.FindAsync(id);
             if (user != null)
             {
+                _log4net.Info("User found successfully");
                 return  new Response("User Found", StatusCodes.Status302Found, user, "");
             }
+            _log4net.Error("404 - Not Found: User not found");
             return new Response("", StatusCodes.Status404NotFound, "", "User not Found");
 
         }

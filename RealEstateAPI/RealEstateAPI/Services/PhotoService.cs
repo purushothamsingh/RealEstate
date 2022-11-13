@@ -7,6 +7,7 @@ namespace RealEstateAPI.Services
     public class PhotoService : IPhotoService
     {
         private readonly Cloudinary cloudinary;
+        private static readonly log4net.ILog _log4net = log4net.LogManager.GetLogger(typeof(PhotoService));
 
         public PhotoService(IConfiguration config)
         {
@@ -20,6 +21,7 @@ namespace RealEstateAPI.Services
 
         public async Task<DeletionResult> DeletePhotoAsync(string publicId)
         {
+            _log4net.Info("DeletePhotoAsync Service method invoked");
             var deleteParams = new DeletionParams(publicId);
 
             var result = await cloudinary.DestroyAsync(deleteParams);
@@ -29,6 +31,7 @@ namespace RealEstateAPI.Services
 
         public async Task<ImageUploadResult> UploadPhotoAsync(IFormFile photo)
         {
+            _log4net.Info("UploadPhotoAsync Service method invoked");
             var uploadResult = new ImageUploadResult();
             if(photo.Length > 0)
             {

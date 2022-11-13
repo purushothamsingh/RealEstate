@@ -46,7 +46,7 @@ namespace RealEstateAPI.Controllers.PropertyModule
         public async Task<IActionResult> GetPropertyList(int SellRent)
         {
             _log4net.Info("------------------------------------------------------------------------------------");
-            _log4net.Info("Get Property List based on Sell(1)/Rent(2) invoked");
+            _log4net.Info("GetPropertyList based on Sell(1)/Rent(2) method invoked");
             _log4net.Info("SellRent Id: " + SellRent);        
 
 
@@ -67,7 +67,7 @@ namespace RealEstateAPI.Controllers.PropertyModule
         {
 
             _log4net.Info("------------------------------------------------------------------------------------");
-            _log4net.Info("Get Property Detail based on Property Id invoked");
+            _log4net.Info("GetPropertyDetail based on Property Id method invoked");
             _log4net.Info("Property Id: " + id);
                 var property = await _repo.GetPropertyDetailAsync(id);
             dynamic propertyDTO = "";
@@ -85,7 +85,7 @@ namespace RealEstateAPI.Controllers.PropertyModule
         {
 
             _log4net.Info("------------------------------------------------------------------------------------");
-            _log4net.Info("Add Property method invoked");           
+            _log4net.Info("AddProperty method invoked");           
 
             var property = mapper.Map<Property>(propertyDto);
             property.PostedBy = Auth.userId;
@@ -94,6 +94,15 @@ namespace RealEstateAPI.Controllers.PropertyModule
             return Ok(addedProperty);
         }
 
-       
+        [HttpGet("listOfProperties/{postedById}")]
+        public async Task<IActionResult> getPropertiesByPostedById(int postedById)
+        {
+            var properties = await _repo.GetPropertyByPostedByIdAsync(postedById);
+            var propertyListDto = mapper.Map<IEnumerable<PropertyListDto>>(properties.Data);
+            properties.Data = propertyListDto;
+            return Ok(properties);
+
+        }
+
     }
 }

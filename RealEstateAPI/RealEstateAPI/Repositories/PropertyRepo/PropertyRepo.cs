@@ -24,7 +24,7 @@ namespace RealEstateAPI.Repositories.PropertyRepo
 
         public async Task<Response> GetPropertiesByIdAsync(int id)
         {
-            _log4net.Info("Get Properties By Id Repository method invoked");
+            _log4net.Info("GetPropertiesByIdAsync Repository method invoked");
             var properties = await _context.Properties
                 .Include(p => p.PropertyType)
                 .Include(p => p.City)
@@ -42,7 +42,7 @@ namespace RealEstateAPI.Repositories.PropertyRepo
 
         public async Task<Response> AddProperty(Property property)
         {
-            _log4net.Info("Add Property Repository method invoked");
+            _log4net.Info("AddProperty Repository method invoked");
            await _context.Properties.AddAsync(property);
             _context.SaveChanges();
             _log4net.Info("Property added Successfully");
@@ -56,7 +56,7 @@ namespace RealEstateAPI.Repositories.PropertyRepo
 
         public async Task<Response> GetPropertyDetailAsync(int id)
         {
-            _log4net.Info("Get Property Details Repository method invoked");
+            _log4net.Info("GetPropertyDetailsAsync Repository method invoked");
             var property = await _context.Properties
                 .Include(p => p.PropertyType)
                 .Include(p => p.City)
@@ -73,6 +73,22 @@ namespace RealEstateAPI.Repositories.PropertyRepo
             return new Response("", StatusCodes.Status404NotFound, "", "Property not Found");
         }
 
-      
+        public async Task<Response> GetPropertyByPostedByIdAsync(int userId)
+        {
+            var reqProperties = await _context.Properties
+                .Include(p => p.PropertyType)
+                .Include(p => p.City)
+                .Include(p => p.FurnishingType)
+                .Include(p => p.Photos)
+                .Where(p => p.PostedBy == userId)
+                .ToListAsync();
+            if (reqProperties != null)
+            {
+
+                return new Response("Properties Found", StatusCodes.Status302Found, reqProperties, "");
+            }
+
+            return new Response("", StatusCodes.Status404NotFound, "", "Property not Found");
+        }
     }
 }

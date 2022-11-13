@@ -12,16 +12,17 @@ namespace RealEstateAPI.Repositories.WishRepo
     public class Wish : IWishRepo
     {
         private readonly ApplicationDbContext db;
-        private readonly IMapper _mapper;
-        private static readonly log4net.ILog _log4net = log4net.LogManager.GetLogger(typeof(Auth));
-        public Wish(ApplicationDbContext _db, IMapper mapper)
+        
+        private static readonly log4net.ILog _log4net = log4net.LogManager.GetLogger(typeof(Wish));
+        public Wish(ApplicationDbContext _db )
         {
             db = _db;
-            _mapper = mapper;
+            
         }
 
         public async Task<Response> AddedWishAsync(WishedDto wishedData)
-        {
+        {            
+            _log4net.Info("AddedWishAsync Repository method invoked");
             wished wish = new wished();
 
             var userPresent = await db.Wishes
@@ -29,6 +30,7 @@ namespace RealEstateAPI.Repositories.WishRepo
 
             if(userPresent==true)
             {
+                _log4net.Error("406 - Not Acceptable: Property already added to Wishlist ");
                 return new Response("", StatusCodes.Status406NotAcceptable, "", "Already Added");
             }
             else
@@ -48,6 +50,7 @@ namespace RealEstateAPI.Repositories.WishRepo
 
                 db.Wishes.AddAsync(wish);
                 db.SaveChanges();
+                _log4net.Info("Property Successfully added to Wishlist");
                 return new Response("added", StatusCodes.Status201Created, wishedData, "");
             }
 
@@ -56,10 +59,12 @@ namespace RealEstateAPI.Repositories.WishRepo
         }
 
         public async Task<Response> GetwishedList(int id)
-        {
+        {            
+            _log4net.Info("GetwishedList Repository method invoked");
             var userWishedData = await db.Wishes.Where(x => x.db_RegisterId == id).Select(x=>x).ToListAsync();
 
-            return new Response("found", StatusCodes.Status200OK, userWishedData, "");
+            _log4net.Info("User's Wishlisted data found Successfully");
+            return new Response("found", StatusCodes.Status302Found, userWishedData, "");
         }
     }
 }

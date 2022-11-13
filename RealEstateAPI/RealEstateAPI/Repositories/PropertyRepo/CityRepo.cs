@@ -22,9 +22,8 @@ namespace RealEstateAPI.Repositories.PropertyRepo
         }
 
         public async Task<Response> GetCitiesAsync()
-        {
-            _log4net.Info("------------------------------------------------------------------------------------");
-            _log4net.Info("Get Cities Repository method invoked");
+        {           
+            _log4net.Info("GetCitiesAsync Repository method invoked");
             var cites = await db.Cities.ToListAsync();
             if(cites.Count >0 )
             {
@@ -38,7 +37,7 @@ namespace RealEstateAPI.Repositories.PropertyRepo
         }
         public async Task<Response> AddCityAsync(City city)
         {
-            _log4net.Info("Add City Repository method invoked");
+            _log4net.Info("AddCityAsync Repository method invoked");
             var cities = await db.Cities.AddAsync(city);
             db.SaveChanges();
             _log4net.Info("City added Successfully");
@@ -46,7 +45,7 @@ namespace RealEstateAPI.Repositories.PropertyRepo
         }
         public async Task<Response> DeleteCityAsync(int CityId)
         {
-            _log4net.Info("Delete City Repository method invoked");
+            _log4net.Info("DeleteCityAsync Repository method invoked");
             var city = await db.Cities.FindAsync(CityId);
             if(city != null)
             {
@@ -61,10 +60,9 @@ namespace RealEstateAPI.Repositories.PropertyRepo
             }
            
         }
-        public async Task<Response> UpdateCityAsync(int id, CityDto city)
-            
+        public async Task<Response> UpdateCityAsync(int id, CityDto city)            
         {
-            _log4net.Info("Update City Repository method invoked");
+            _log4net.Info("UpdateCityAsync Repository method invoked");
             var fetchCity = db.Cities.Find(id);
             
             if (fetchCity != null)

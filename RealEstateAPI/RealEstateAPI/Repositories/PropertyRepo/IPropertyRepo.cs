@@ -11,6 +11,7 @@ namespace RealEstateAPI.Repositories.PropertyRepo
         Task<Response> AddProperty(Property property);
         Task<Response> DeleteProperty(int id);
         Task<Response> GetPropertyDetailAsync(int id);
-        
+        Task<Response> GetPropertyByPostedByIdAsync(int userId);
+
     }
 }

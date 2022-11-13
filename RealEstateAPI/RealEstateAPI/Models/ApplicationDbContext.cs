@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using RealEstateAPI.Models.AuthModels;
 using RealEstateAPI.Models.Property;
+using RealEstateAPI.Models.WishModule;
 
 namespace RealEstateAPI.Models
 {
@@ -16,6 +17,8 @@ namespace RealEstateAPI.Models
         public DbSet<Property.Property> Properties { get; set; }
         public DbSet<FurnishingType> FurnishingTypes { get; set; }
         public DbSet<PropertyType> PropertyTypes { get; set; }
+
+        public DbSet<wished> Wishes { get; set; }
 
     }
 }

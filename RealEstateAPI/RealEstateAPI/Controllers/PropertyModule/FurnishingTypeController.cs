@@ -26,8 +26,13 @@ namespace RealEstateAPI.Controllers.PropertyModule
             _log4net.Info("Get Furnishing Types method invoked");
 
             var FurnishingTypes = await _repo.GetFurnishingTypesAsync();
-            var FurnishingTypesDto = mapper.Map<IEnumerable<KeyValuePairDto>>(FurnishingTypes.Data);
-            FurnishingTypes.Data= FurnishingTypesDto;
+            dynamic furnishingTypesDTO = "";
+            if (!FurnishingTypes.Data.Equals(""))
+            {
+
+                furnishingTypesDTO = mapper.Map<IEnumerable<KeyValuePairDto>>(FurnishingTypes.Data);
+            }
+                FurnishingTypes.Data= furnishingTypesDTO;
             return Ok(FurnishingTypes);
         }
     }

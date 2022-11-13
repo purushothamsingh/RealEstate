@@ -16,7 +16,7 @@ using Org.BouncyCastle.Bcpg;
 
 namespace RealEstateAPI.Repositories.LoginRepo
 {
-    public class Auth : IAuthRepo<Auth>
+    public class Auth : IAuthRepo
     {
         public static int userId = 0;
         private static Response response = new Response();
@@ -27,16 +27,6 @@ namespace RealEstateAPI.Repositories.LoginRepo
         {
             db = _db;
            
-        }
-
-        public Response CreateResponse(string message, int code, dynamic data, string error)
-        {
-            response.Message = message;
-            response.Code = code;
-            response.Data = data;
-            response.Error = error;
-
-            return response;
         }
 
         private bool DecriptPassword(IQueryable<Db_Register> obj, string password)
@@ -82,13 +72,15 @@ namespace RealEstateAPI.Repositories.LoginRepo
                 if ( db.Db_Registers.FirstOrDefaultAsync(x => x.UserName.ToLower() == registers.UserName.ToLower()).Result != null){
 
                     _log4net.Error("406 - Not Acceptable: User already exist");
-                    return CreateResponse("User Already exits", StatusCodes.Status406NotAcceptable, "", "Duplicate user found");
+
+                    return new Response("User Already exits", StatusCodes.Status406NotAcceptable, "", "Duplicate user found");
+
                 }
 
                  db.Db_Registers.Add(registers);
                  db.SaveChanges();
                 _log4net.Info("User Added Successfully");
-                return CreateResponse("User found", StatusCodes.Status201Created, registers, "");
+                return new Response("User added", StatusCodes.Status201Created, registers, "");
 
             }
         }
@@ -103,7 +95,7 @@ namespace RealEstateAPI.Repositories.LoginRepo
             if (user.Result == false)
             {
                 _log4net.Error("404 - Not Found: Invalid User");
-               return CreateResponse("", StatusCodes.Status404NotFound, "", "Invalid User");
+               return new Response("", StatusCodes.Status404NotFound, "", "Invalid User");
             }
             else if(user.Result)
             { 
@@ -139,13 +131,13 @@ namespace RealEstateAPI.Repositories.LoginRepo
                     var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
                     _log4net.Info("User Validated and token created successfully");
-                    return CreateResponse("User Found", StatusCodes.Status302Found, jwt, ""); 
+                    return new Response("User Found", StatusCodes.Status302Found, jwt, ""); 
                 
                 }
                 
                 else {
                     _log4net.Error("404 - Not Found: User Not Found"); 
-                    return CreateResponse("", StatusCodes.Status404NotFound, "", "User not found"); }
+                    return new Response("", StatusCodes.Status404NotFound, "", "User not found"); }
             }
             else { return new Response(); }
            
@@ -159,7 +151,7 @@ namespace RealEstateAPI.Repositories.LoginRepo
             if(mail == false)
             {
                 _log4net.Error("404 - Not Found: Invalid Email entered");
-                return CreateResponse("", StatusCodes.Status404NotFound, "", "Invalid Email");
+                return new Response("", StatusCodes.Status404NotFound, "", "Invalid Email");
             }
             else
             {
@@ -180,20 +172,20 @@ namespace RealEstateAPI.Repositories.LoginRepo
                             db.SaveChangesAsync();
 
                             _log4net.Info("Password Changed");
-                            return CreateResponse("Password changed sucessfully", StatusCodes.Status201Created, currentObject, "");
+                            return new Response("Password changed sucessfully", StatusCodes.Status201Created, currentObject, "");
 
                         }
                     }
                     else
                     {
                         _log4net.Error("406 - Not Acceptable: Password and Confirm Password not matched");
-                        return CreateResponse("", StatusCodes.Status406NotAcceptable, "", "Password And ConfirmPassword Not Matched");
+                        return new Response("", StatusCodes.Status406NotAcceptable, "", "Password And ConfirmPassword Not Matched");
                     }
                 }
                 else
                 {
                     _log4net.Error("403 - Forbidden: Invalid OTP");
-                    return CreateResponse("", StatusCodes.Status403Forbidden, "", "Invalid Otp");
+                    return new Response("", StatusCodes.Status403Forbidden, "", "Invalid Otp");
                 }
 
 
@@ -227,11 +219,22 @@ namespace RealEstateAPI.Repositories.LoginRepo
                 smtp.Disconnect(true);
 
                 _log4net.Info("OTP sent successfully");
-                return CreateResponse("Otp Sent Sucessfully", StatusCodes.Status200OK, value, "");
+                return new Response("Otp Sent Sucessfully", StatusCodes.Status200OK, value, "");
             }
 
             _log4net.Error("404 - Not Found; Invalid Email");
-            return CreateResponse("Invalid Email", StatusCodes.Status404NotFound, "", "Email Not found");
+            return new Response("Invalid Email", StatusCodes.Status404NotFound, "", "Email Not found");
+        }
+
+        public async Task<Response> GetUserByIdAsync(int id)
+        {
+            var user = await db.Db_Registers.FindAsync(id);
+            if (user != null)
+            {
+                return  new Response("User Found", StatusCodes.Status302Found, user, "");
+            }
+            return new Response("", StatusCodes.Status404NotFound, "", "User not Found");
+
         }
     }
 }

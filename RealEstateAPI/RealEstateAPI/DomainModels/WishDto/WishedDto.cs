@@ -1,12 +1,9 @@
-﻿using RealEstateAPI.Models.AuthModels;
-using RealEstateAPI.Models.Property;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace RealEstateAPI.DomainModels.PropertyDtos
+﻿namespace RealEstateAPI.DomainModels.WishDto
 {
-    public class PropertyListDto
+    public class WishedDto
     {
         public int Id { get; set; }
+        public int PropertyId { get; set; }
         public int SellRent { get; set; }
         public string Name { get; set; }
         public string PropertyType { get; set; }
@@ -15,9 +12,8 @@ namespace RealEstateAPI.DomainModels.PropertyDtos
         public int BHK { get; set; }
         public int BuiltArea { get; set; }
         public string City { get; set; }
-        public string Country { get; set; }
         public bool ReadyToMove { get; set; }
-        public string Photo { get; set; }
-        public DateTime EstPossessionOn { get; set; }
+        public string photo { get; set; }
+        public int db_RegisterId { get; set; }
     }
 }

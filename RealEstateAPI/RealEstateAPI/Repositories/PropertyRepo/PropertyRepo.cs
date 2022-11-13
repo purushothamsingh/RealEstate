@@ -1,7 +1,10 @@
-﻿using AutoMapper;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RealEstateAPI.Models;
 using RealEstateAPI.Models.Property;
+
+using RealEstateAPI.Repositories.PhotoRepo;
+
 using System.Security.Claims;
 
 namespace RealEstateAPI.Repositories.PropertyRepo
@@ -9,23 +12,14 @@ namespace RealEstateAPI.Repositories.PropertyRepo
     public class PropertyRepo : IPropertyRepo
     {
         private readonly ApplicationDbContext _context;
-        
         private static Response response = new Response();
-        private static readonly log4net.ILog _log4net = log4net.LogManager.GetLogger(typeof(PropertyRepo));
 
-        public PropertyRepo(ApplicationDbContext context)
+        private readonly IPhotoService photoService;
+        private static readonly log4net.ILog _log4net = log4net.LogManager.GetLogger(typeof(PropertyRepo));
+        public PropertyRepo(ApplicationDbContext context, IPhotoService photoService)
         {
             _context = context;
-           
-        }
-        public Response CreateResponse(string message, int code, dynamic data, string error)
-        {
-            response.Message = message;
-            response.Code = code;
-            response.Data = data;
-            response.Error = error;
-
-            return response;
+            this.photoService = photoService; 
         }
 
         public async Task<Response> GetPropertiesByIdAsync(int id)
@@ -34,15 +28,16 @@ namespace RealEstateAPI.Repositories.PropertyRepo
             var properties = await _context.Properties
                 .Include(p => p.PropertyType)
                 .Include(p => p.City)
-                .Include(p => p.FurnishingType)                
+                .Include(p => p.FurnishingType)  
+                .Include(p => p.Photos)
                 .Where(p => p.SellRent == id).ToListAsync();
             if(properties != null)
             {
                 _log4net.Info("Properties of Category " +id+ "found");
-                return CreateResponse("Property Found", StatusCodes.Status302Found, properties, "");
+                return new Response("Property Found", StatusCodes.Status302Found, properties, "");
             }
             _log4net.Error("404 Error: Property not found");
-            return CreateResponse("", StatusCodes.Status404NotFound, "", "Property not Found");
+            return new Response("", StatusCodes.Status404NotFound, "", "Property not Found");
         }
 
         public async Task<Response> AddProperty(Property property)
@@ -51,7 +46,7 @@ namespace RealEstateAPI.Repositories.PropertyRepo
            await _context.Properties.AddAsync(property);
             _context.SaveChanges();
             _log4net.Info("Property added Successfully");
-            return CreateResponse("Added Property successfully",StatusCodes.Status201Created,property,"");
+            return new Response("Added Property successfully",StatusCodes.Status201Created,property,"");
         }
 
         public Task<Response> DeleteProperty(int id)
@@ -66,15 +61,16 @@ namespace RealEstateAPI.Repositories.PropertyRepo
                 .Include(p => p.PropertyType)
                 .Include(p => p.City)
                 .Include(p => p.FurnishingType)
+                .Include(p => p.Photos)
                 .Where(p => p.Id == id)
                 .FirstAsync();
             if (property != null)
             {
                 _log4net.Info("Property found Successfully");
-                return CreateResponse("Property Found", StatusCodes.Status302Found, property, "");
+                return new Response("Property Found", StatusCodes.Status302Found, property, "");
             }
             _log4net.Error("404 - Not Found: Property not found");
-            return CreateResponse("", StatusCodes.Status404NotFound, "", "Property not Found");
+            return new Response("", StatusCodes.Status404NotFound, "", "Property not Found");
         }
 
         public async Task<Response> GetPropertyByPostedByIdAsync(int userId)

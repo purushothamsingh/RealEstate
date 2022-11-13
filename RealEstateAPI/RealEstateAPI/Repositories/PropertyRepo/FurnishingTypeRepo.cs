@@ -16,15 +16,7 @@ namespace RealEstateAPI.Repositories.PropertyRepo
             _context = context;
         }
 
-        public Response CreateResponse(string message, int code, dynamic data, string error)
-        {
-            response.Message = message;
-            response.Code = code;
-            response.Data = data;
-            response.Error = error;
 
-            return response;
-        }
         public async Task<Response> GetFurnishingTypesAsync()
         {
             _log4net.Info("Get Furnishing Type Repository method invoked");
@@ -32,11 +24,13 @@ namespace RealEstateAPI.Repositories.PropertyRepo
 
             if (furnishingTypes != null)
             {
+
                 _log4net.Info("Property Found");
-                return CreateResponse("Property Found", StatusCodes.Status302Found, furnishingTypes, "");
+                return new Response("Property Found", StatusCodes.Status302Found, furnishingTypes, "");
             }
             _log4net.Error("404 Error: Property not found");
-            return CreateResponse("", StatusCodes.Status404NotFound, "", "Property not Found");
+            return new Response("", StatusCodes.Status404NotFound, "", "Property not Found");
+
         }
     }
 }

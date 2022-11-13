@@ -40,7 +40,7 @@ namespace RealEstateAPI.Repositories.WishRepo
                 wish.ReadyToMove = wishedData.ReadyToMove;
                 wish.db_RegisterId = wishedData.db_RegisterId;
                 wish.BuiltArea = wishedData.BuiltArea;
-                wish.photo = "";
+                wish.photo =wishedData.photo;
                 wish.BHK = wishedData.BHK;
                 wish.FurnishingType = wishedData.FurnishingType;
                 wish.Name = wishedData.Name;

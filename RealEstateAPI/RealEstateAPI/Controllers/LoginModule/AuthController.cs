@@ -19,7 +19,7 @@ namespace RealEstateAPI.Controllers.LoginModule
 
         private readonly IAuthRepo authRepo;
         private readonly IMapper mapper;
-           
+
         private static readonly log4net.ILog _log4net = log4net.LogManager.GetLogger(typeof(AuthController));
 
 
@@ -30,28 +30,28 @@ namespace RealEstateAPI.Controllers.LoginModule
             this.mapper = mapper;
         }
         [HttpPost("Register")]
-     public async Task<IActionResult>AddUser(DomainRegister req)
+        public async Task<IActionResult> AddUser(DomainRegister req)
         {
             _log4net.Info("------------------------------------------------------------------------------------");
             _log4net.Info("Add User method invoked");
 
-            var user = await authRepo.RegisterUserAsync(req);                  
-            return Ok(user);    
+            var user = await authRepo.RegisterUserAsync(req);
+            return Ok(user);
         }
 
         [HttpPost("Login")]
-     public async Task<IActionResult>ValidateCredentials(Login req)
+        public async Task<IActionResult> ValidateCredentials(Login req)
         {
             _log4net.Info("------------------------------------------------------------------------------------");
             _log4net.Info("Login method invoked");
 
-            var request =  await authRepo.ValidateUserAsync(req);            
+            var request = await authRepo.ValidateUserAsync(req);
             return Ok(request);
         }
 
         [HttpPut]
         [Route("ForgotPassword/{otp:int}")]
-        public async Task<IActionResult> ForgotPassword(string email,int otp, string password, string confirmpass )
+        public async Task<IActionResult> ForgotPassword(string email, int otp, string password, string confirmpass)
         {
             _log4net.Info("------------------------------------------------------------------------------------");
             _log4net.Info("Forgot Password method invoked");
@@ -68,7 +68,7 @@ namespace RealEstateAPI.Controllers.LoginModule
             _log4net.Info("Generate OTP method invoked");
 
             var request = await authRepo.GenerateOtpAsync(email);
-            if(request.Code == 200)
+            if (request.Code == 200)
             {
                 SaveOtp = request.Data;
                 return Ok(request);
@@ -78,7 +78,8 @@ namespace RealEstateAPI.Controllers.LoginModule
         }
 
         [HttpGet("user/{id}")]
-        public async Task<IActionResult> GetUserById(int id) { 
+        public async Task<IActionResult> GetUserById(int id)
+        {
 
             var user = await authRepo.GetUserByIdAsync(id);
             var userDTO = mapper.Map<UserDto>(user.Data);
@@ -87,8 +88,22 @@ namespace RealEstateAPI.Controllers.LoginModule
 
         }
 
-
-
+        [HttpPost]
+        [Route("{requestEmail}/{subject}")]
+        public async Task<IActionResult> SendComplaintMail(string requestEmail, string subject)
+        {
+            var complaint = await authRepo.EmailVerification(requestEmail, subject);
+            if(complaint.Code == 200)
+            {
+                return Ok(complaint);
+            }
+            else
+            {
+                complaint.Message = "";
+                complaint.Error = "Internal Erro";
+                return Ok(complaint);
+            }
+        }
     }
 }
 

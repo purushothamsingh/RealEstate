@@ -15,5 +15,7 @@ namespace RealEstateAPI.Repositories.LoginRepo
         Task<Response> GenerateOtpAsync(string email);
 
         Task<Response> GetUserByIdAsync(int id);
+
+        Task<Response> EmailVerification(string requestEmail, string subject);
     }
 } 

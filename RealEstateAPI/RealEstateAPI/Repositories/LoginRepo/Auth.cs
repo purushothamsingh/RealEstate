@@ -236,5 +236,28 @@ namespace RealEstateAPI.Repositories.LoginRepo
             return new Response("", StatusCodes.Status404NotFound, "", "User not Found");
 
         }
+
+        public async Task<Response> EmailVerification(string requestEmail, string subject)
+        {
+            Random randomNumber = new Random();
+            int value = randomNumber.Next(100000, 999999);
+
+            var email = new MimeMessage();
+            email.From.Add(MailboxAddress.Parse("kpurushothamsingh@gmail.com"));
+            email.To.Add(MailboxAddress.Parse(requestEmail));
+            email.To.Add(MailboxAddress.Parse("kpurushothamsingh@gmail.com"));
+            email.Subject = "Test Email Subject";
+            email.Body = new TextPart(TextFormat.Html) { Text = subject };
+
+            // send email
+            using var smtp = new SmtpClient();
+            smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+
+            smtp.Authenticate("kpurushothamsingh@gmail.com", "evqypbiaclpnrrlb");
+            smtp.Send(email);
+            smtp.Disconnect(true);
+
+            return new Response("Complaint Recieved", StatusCodes.Status200OK, subject, "");
+        }
     }
 }

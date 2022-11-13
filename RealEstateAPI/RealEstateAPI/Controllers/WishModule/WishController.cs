@@ -8,7 +8,6 @@ using RealEstateAPI.DomainModels.WishDto;
 using RealEstateAPI.Models.WishModule;
 using RealEstateAPI.Repositories.LoginRepo;
 using RealEstateAPI.Repositories.WishRepo;
-using wished = RealEstateAPI.Models.WishModule.wished;
 
 namespace RealEstateAPI.Controllers.WishModule
 {
@@ -38,8 +37,8 @@ namespace RealEstateAPI.Controllers.WishModule
 
             return Ok(data);
         }
-        [HttpGet("userWished/{id:int}")]
 
+        [HttpGet("userWished/{id:int}")]
         public async Task<IActionResult> WishedData(int id)
         {
 

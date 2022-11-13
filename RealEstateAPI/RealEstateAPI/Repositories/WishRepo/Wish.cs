@@ -12,12 +12,12 @@ namespace RealEstateAPI.Repositories.WishRepo
     public class Wish : IWishRepo
     {
         private readonly ApplicationDbContext db;
-        private readonly IMapper _mapper;
+        
         private static readonly log4net.ILog _log4net = log4net.LogManager.GetLogger(typeof(Auth));
-        public Wish(ApplicationDbContext _db, IMapper mapper)
+        public Wish(ApplicationDbContext _db )
         {
             db = _db;
-            _mapper = mapper;
+            
         }
 
         public async Task<Response> AddedWishAsync(WishedDto wishedData)
@@ -59,7 +59,7 @@ namespace RealEstateAPI.Repositories.WishRepo
         {
             var userWishedData = await db.Wishes.Where(x => x.db_RegisterId == id).Select(x=>x).ToListAsync();
 
-            return new Response("found", StatusCodes.Status200OK, userWishedData, "");
+            return new Response("found", StatusCodes.Status302Found, userWishedData, "");
         }
     }
 }

@@ -53,6 +53,7 @@ namespace RealEstateAPI.Repositories.PropertyRepo
         {
             var record = await _context.Properties.FindAsync(id);
             _context.Properties.Remove(record);
+            _context.SaveChanges();
             return new Response("Removed propoerty successfully", StatusCodes.Status200OK, record, "");
         }
 

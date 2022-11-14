@@ -49,9 +49,11 @@ namespace RealEstateAPI.Repositories.PropertyRepo
             return new Response("Added Property successfully",StatusCodes.Status201Created,property,"");
         }
 
-        public Task<Response> DeleteProperty(int id)
+        public async Task<Response> DeleteProperty(int id)
         {
-            throw new NotImplementedException();
+            var record = await _context.Properties.FindAsync(id);
+            _context.Properties.Remove(record);
+            return new Response("Removed propoerty successfully", StatusCodes.Status200OK, record, "");
         }
 
         public async Task<Response> GetPropertyDetailAsync(int id)

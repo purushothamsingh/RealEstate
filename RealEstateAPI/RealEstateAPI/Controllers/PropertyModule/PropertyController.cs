@@ -94,6 +94,14 @@ namespace RealEstateAPI.Controllers.PropertyModule
             return Ok(addedProperty);
         }
 
+        [Authorize]
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteProperty(int id)
+        {
+            var response =await _repo.DeleteProperty(id);
+            return Ok(response);
+        }
+
         [HttpGet("listOfProperties/{postedById}")]
         public async Task<IActionResult> getPropertiesByPostedById(int postedById)
         {

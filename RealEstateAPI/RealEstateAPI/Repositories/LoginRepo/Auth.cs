@@ -68,17 +68,18 @@ namespace RealEstateAPI.Repositories.LoginRepo
                 registers.IsRegister = true;
                 registers.Mobile = request.Mobile;
 
-                if ( db.Db_Registers.FirstOrDefaultAsync(x => x.UserName.ToLower() == registers.UserName.ToLower()).Result != null)
+                if ( db.Db_Registers.FirstOrDefaultAsync((x => x.UserName.ToLower() == registers.UserName.ToLower() || x.Email == registers.Email )).Result != null)
                 {
+                    
                     _log4net.Error("406 - Not Acceptable: User already exist");
-                    return new Response("User Already exits", StatusCodes.Status406NotAcceptable, "", "Duplicate user found");
+                    return new Response("UserName or Email Already exits", StatusCodes.Status406NotAcceptable, "", "Duplicate user found");
 
                 }
 
                  db.Db_Registers.Add(registers);
                  db.SaveChanges();
                 _log4net.Info("User Added Successfully");
-                return new Response("User added", StatusCodes.Status201Created, registers, "");
+                return new Response("User Registered Successfuly", StatusCodes.Status201Created, registers, "");
 
             }
         }
@@ -100,8 +101,7 @@ namespace RealEstateAPI.Repositories.LoginRepo
                 var id = 0;
                 foreach(var i in obj)
                 {
-                    id = i.ID;
-                   
+                    id = i.ID; 
                 }
                 Auth.userId = id;
 

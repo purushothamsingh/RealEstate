@@ -95,7 +95,7 @@ namespace RealEstateAPI.Controllers.PropertyModule
         }
 
         [Authorize]
-        [HttpPost("delete/{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteProperty(int id)
         {
             var response =await _repo.DeleteProperty(id);

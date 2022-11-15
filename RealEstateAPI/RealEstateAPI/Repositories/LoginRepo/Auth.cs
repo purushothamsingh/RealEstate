@@ -123,7 +123,7 @@ namespace RealEstateAPI.Repositories.LoginRepo
                     var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
                     var token = new JwtSecurityToken(
                         claims: claims,
-                        expires: DateTime.Now.AddMinutes(10),
+                        expires: DateTime.Now.AddMinutes(45),
                         signingCredentials: cred);
                     var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
@@ -233,23 +233,21 @@ namespace RealEstateAPI.Repositories.LoginRepo
                 return  new Response("User Found", StatusCodes.Status302Found, user, "");
             }
             _log4net.Error("404 - Not Found: User not found");
-            return new Response("", StatusCodes.Status404NotFound, "", "User not Found");
+            return new Response("", StatusCodes.Status404NotFound, "", "User not Found"); 
 
         }
 
         public async Task<Response> EmailVerification(string requestEmail, string subject)
         {
-            Random randomNumber = new Random();
-            int value = randomNumber.Next(100000, 999999);
+           
 
             var email = new MimeMessage();
             email.From.Add(MailboxAddress.Parse("kpurushothamsingh@gmail.com"));
             email.To.Add(MailboxAddress.Parse(requestEmail));
             email.To.Add(MailboxAddress.Parse("kpurushothamsingh@gmail.com"));
-            email.Subject = "Test Email Subject";
+            email.Subject = "Complaint Message";
             email.Body = new TextPart(TextFormat.Html) { Text = subject };
 
-            // send email
             using var smtp = new SmtpClient();
             smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
 

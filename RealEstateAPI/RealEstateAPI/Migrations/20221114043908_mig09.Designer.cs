@@ -12,8 +12,8 @@ using RealEstateAPI.Models;
 namespace RealEstateAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221111162719_SeedData")]
-    partial class SeedData
+    [Migration("20221114043908_mig09")]
+    partial class mig09
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -191,6 +191,10 @@ namespace RealEstateAPI.Migrations
                     b.Property<int>("PropertyId")
                         .HasColumnType("int");
 
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PropertyId");
@@ -322,7 +326,7 @@ namespace RealEstateAPI.Migrations
                     b.ToTable("PropertyTypes");
                 });
 
-            modelBuilder.Entity("RealEstateAPI.Models.WishModule.Wish", b =>
+            modelBuilder.Entity("RealEstateAPI.Models.WishModule.wished", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -340,8 +344,9 @@ namespace RealEstateAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FurnishingTypeId")
-                        .HasColumnType("int");
+                    b.Property<string>("FurnishingType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -350,8 +355,12 @@ namespace RealEstateAPI.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.Property<int>("PropertyTypeId")
+                    b.Property<int>("PropertyId")
                         .HasColumnType("int");
+
+                    b.Property<string>("PropertyType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("ReadyToMove")
                         .HasColumnType("bit");
@@ -419,7 +428,7 @@ namespace RealEstateAPI.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("RealEstateAPI.Models.WishModule.Wish", b =>
+            modelBuilder.Entity("RealEstateAPI.Models.WishModule.wished", b =>
                 {
                     b.HasOne("RealEstateAPI.Models.AuthModels.Db_Register", "db_Register")
                         .WithMany()

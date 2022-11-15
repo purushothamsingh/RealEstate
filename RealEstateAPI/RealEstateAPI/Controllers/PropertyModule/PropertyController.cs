@@ -94,7 +94,7 @@ namespace RealEstateAPI.Controllers.PropertyModule
             return Ok(addedProperty);
         }
 
-        [Authorize]
+       
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteProperty(int id)
         {
